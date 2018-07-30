@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewData["Title"] = "Add";
+}
+
+<h2>Add</h2>
+
+<h4>Concert</h4>
+<hr />
+<div id="create_concert">
+    <div class="row">
+        <div class="col-md-4">
+
+            <form asp-antiforgery="true">
+                <div class="form-group">
+                    <label>Concert performer</label>
+                    <input type="text" class="form-control"
+                           id="concert_performer" name="concert_performer" v-model="concert_performer" placeholder="concert_performer" />
+                </div>
+
+                <div class="form-group">
+                    <label>Tickets amount</label>
+                    <input type="number" class="form-control"
+                           id="tickets_amount" name="tickets_amount" v-model="tickets_amount" placeholder="tickets_amount" />
+                </div>
+
+                <div class="form-group">
+                    <label>Concert date</label>
+                    <input type="datetime-local" class="form-control"
+                           id="tickets_amount" name="concert_date" v-model="concert_date" placeholder="concert_date" />
+                </div>
+
+                <div class="form-group">
+                    <label>Place</label>
+                    <input type="text" class="form-control"
+                           id="place" name="place" v-model="place" placeholder="place" />
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" class="form-control"
+                           id="price" name="price" v-model="price" placeholder="price" />
+                </div>
+
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="concert_type" name="concert_type" class="form-control" v-model="concert_type">
+                        <option value="classical">Classical</option>
+                        <option value="open_air">Open Air</option>
+                        <option value="party">Party</option>
+                    </select>
+                </div>
+                <div v-if="concert_type === 'classical'">
+                        <div class="form-group">
+                            <label>VocalType</label>
+                            <input type="text" class="form-control"
+                                   id="vocal_type" name="vocal_type" v-model="vocal_type" placeholder="vocal_type" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control"
+                                   id="name" name="name" v-model="name" placeholder="name" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Composer</label>
+                            <input type="text" class="form-control"
+                                   id="composer" name="composer" v-model="composer" placeholder="composer" />
+                        </div>
+                </div>
+                <div v-else-if="concert_type === 'open_air'">
+                    <div class="form-group">
+                        <label>Drive Way</label>
+                        <input type="text" class="form-control"
+                               id="drive_way" name="drive_way" v-model="drive_way" placeholder="drive_way" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Headliner</label>
+                        <input type="text" class="form-control"
+                               id="headliner" name="headliner" v-model="headliner" placeholder="headliner" />
+                    </div>
+                </div>
+                <div v-else-if="concert_type === 'party'">
+                    <div class="form-group">
+                        <label>Age Qualification</label>
+                        <input type="number" class="form-control"
+                               id="age_qualification" name="age_qualification" 
+                               v-model="age_qualification" placeholder="age_qualification" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn" v-on:click="create_concert">Create</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

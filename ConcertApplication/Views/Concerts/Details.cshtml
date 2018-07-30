@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div id="concert_details">
+    <h4>Concert </h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Type
+        </dt>
+        <dd>
+            {{item.discriminator}}
+        </dd>
+        <dt>
+            Id
+        </dt>
+        <dd>
+            {{item.id}}
+        </dd>
+        <dt>
+            Performer
+        </dt>
+        <dd>
+            {{item.performer}}
+        </dd>
+        <dt>
+            Tickets Amount
+        </dt>
+        <dd>
+            {{item.ticketsAmount}}
+        </dd>
+        <dt>
+            Tickets Left
+        </dt>
+        <dd>
+            {{item.ticketsLeft}}
+        </dd>
+        <dt>
+            Date
+        </dt>
+        <dd>
+            {{item.date}}
+        </dd>
+        <dt>
+            Place
+        </dt>
+        <dd>
+            {{item.place}}
+        </dd>
+        <dt>
+            Price
+        </dt>
+        <dd>
+            {{item.price}}
+        </dd>
+    </dl>
+</div>
+
+
+@*<template v-if="item.concert_type === 'classical'">
+    <td>{{ item.vocalType }}</td>
+    <td>{{ item.name }}</td>
+    <td>{{ item.composer }}</td>
+</template>
+<template v-else-if="item.concert_type === 'open_air'">
+    <td>{{ item.driveWay }}</td>
+    <td>{{ item.headliner }}</td>
+</template>
+<template v-else-if="item.concert_type === 'party'">
+    <td>{{ item.ageQulification }}</td>
+</template>*@

@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+<div id="concerts">
+    <h2>All concerts</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Performer
+                </th>
+                <th>
+                    TicketsAmount
+                </th>
+                <th>
+                    TicketsLeft
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Place
+                </th>
+                <th>
+                    Price
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in concert_items">
+                <td>{{ item.discriminator }}</td>
+                <td>{{ item.id }}</td>
+                <td>{{ item.performer }}</td>
+                <td>{{ item.ticketsAmount }}</td>
+                <td>{{ item.ticketsLeft }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.place }}</td>
+                <td>{{ item.price }}</td>
+
+                <td>
+                    <button class="btn" type="button" v-on:click="get_details(item)">Details</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+@*<div id="map_app">
+    <label>
+        AutoComplete
+        <gmap-autocomplete @place_changed="setPlace">
+            </gmap-autocomplete>
+            <button v-on:click="usePlace">Add</button>
+</label>
+    <br />
+
+    <gmap-map style="width: 600px; height: 300px;" :zoom="1" :center="{lat: 0, lng: 0}">
+        <GmapMarker v-for="(marker, index) in markers"
+                    :key="index"
+                    :position="marker.position" />
+        <GmapMarker v-if="this.place"
+                    label="★"
+                    :position="{
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng(),
+        }" />
+        </gmap-map>
+
+
+</div>*@
