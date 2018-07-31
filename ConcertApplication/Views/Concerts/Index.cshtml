@@ -3,16 +3,22 @@
     ViewData["Title"] = "Index";
 }
 <div id="concerts">
-    <h2>All concerts</h2>
+    <h2>All concerts {{message}}</h2>
 
     <table class="table">
         <thead>
+            @*<tr v-for="header in header_items">
+                <th>{{ header.text }}</th>
+            </tr>*@
             <tr>
                 <th>
                     Type
                 </th>
                 <th>
                     Id
+                </th>
+                <th>
+                    Name
                 </th>
                 <th>
                     Performer
@@ -38,6 +44,7 @@
             <tr v-for="item in concert_items">
                 <td>{{ item.discriminator }}</td>
                 <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
                 <td>{{ item.performer }}</td>
                 <td>{{ item.ticketsAmount }}</td>
                 <td>{{ item.ticketsLeft }}</td>
@@ -46,7 +53,7 @@
                 <td>{{ item.price }}</td>
 
                 <td>
-                    <button class="btn" type="button" v-on:click="get_details(item)">Details</button>
+                    <button class="btn" type="button" v-on:click="get_details(item.id)">Details</button>
                 </td>
             </tr>
         </tbody>

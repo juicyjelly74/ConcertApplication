@@ -7,11 +7,16 @@
 
 <h4>Concert</h4>
 <hr />
-<div id="create_concert">
+<div id="creation_concert">
     <div class="row">
         <div class="col-md-4">
 
             <form asp-antiforgery="true">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control"
+                           id="concert_name" name="concert_name" v-model="concert_name" placeholder="concert_name" />
+                </div>
                 <div class="form-group">
                     <label>Concert performer</label>
                     <input type="text" class="form-control"
@@ -51,23 +56,23 @@
                     </select>
                 </div>
                 <div v-if="concert_type === 'classical'">
-                        <div class="form-group">
-                            <label>VocalType</label>
-                            <input type="text" class="form-control"
-                                   id="vocal_type" name="vocal_type" v-model="vocal_type" placeholder="vocal_type" />
-                        </div>
+                    <div class="form-group">
+                        <label>VocalType</label>
+                        <input type="text" class="form-control"
+                               id="vocal_type" name="vocal_type" v-model="vocal_type" placeholder="vocal_type" />
+                    </div>
 
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control"
-                                   id="name" name="name" v-model="name" placeholder="name" />
-                        </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control"
+                               id="name" name="name" v-model="name" placeholder="name" />
+                    </div>
 
-                        <div class="form-group">
-                            <label>Composer</label>
-                            <input type="text" class="form-control"
-                                   id="composer" name="composer" v-model="composer" placeholder="composer" />
-                        </div>
+                    <div class="form-group">
+                        <label>Composer</label>
+                        <input type="text" class="form-control"
+                               id="composer" name="composer" v-model="composer" placeholder="composer" />
+                    </div>
                 </div>
                 <div v-else-if="concert_type === 'open_air'">
                     <div class="form-group">
@@ -86,7 +91,7 @@
                     <div class="form-group">
                         <label>Age Qualification</label>
                         <input type="number" class="form-control"
-                               id="age_qualification" name="age_qualification" 
+                               id="age_qualification" name="age_qualification"
                                v-model="age_qualification" placeholder="age_qualification" />
                     </div>
                 </div>

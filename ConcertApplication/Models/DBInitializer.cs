@@ -43,6 +43,7 @@ namespace ConcertApplication.Models
 
             Party party = new Party
             {
+                Name = "Mega Party",
                 Performer = "DJ BlaBla",
                 TicketsAmount = 10,
                 TicketsLeft = 10,

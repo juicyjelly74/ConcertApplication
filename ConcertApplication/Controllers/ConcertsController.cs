@@ -15,10 +15,12 @@ namespace ConcertApplication.Controllers
     public class ConcertsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private List<Concert> currentConcerts;
 
         public ConcertsController(ApplicationDbContext context)
         {
             _context = context;
+            currentConcerts = context.Concerts.ToList();
         }
 
         [HttpGet]
@@ -28,7 +30,7 @@ namespace ConcertApplication.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        // GET: Concerts/Create
+        
         public IActionResult Add()
         {
             return View();
@@ -42,23 +44,63 @@ namespace ConcertApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                Concert concert = await _context.Concerts.FirstOrDefaultAsync(u => u.Performer == model.Performer);
+                Concert concert = await _context.Concerts.FirstOrDefaultAsync(u => u.Name == model.Name);
                 
                 if (concert == null)
                 {
-                    concert = new Concert { /*Id = model.Id,*/
-                        Performer = model.Performer, TicketsAmount = model.TicketsAmount,
-                        TicketsLeft = model.TicketsAmount,
-                        //Date = new DateTime(4562222),
-                        Place = model.Place,
-                        Price = model.Price
-                    };
+                    if (model.Type == "classical")
+                    {
+                        ClassicConcert classicConcert = new ClassicConcert
+                        { /*Id = model.Id,*/
+                            Name = model.Name,
+                            Performer = model.Performer,
+                            TicketsAmount = model.TicketsAmount,
+                            TicketsLeft = model.TicketsAmount,
+                            //Date = new DateTime(4562222),
+                            Place = model.Place,
+                            Price = model.Price,
+                            VocalType = model.VocalType,
+                            ClassicalConcertName = model.ClassicalConcertName,
+                            Composer = model.Composer
+                        };
+                        _context.ClassicConcerts.Add(classicConcert);
+                    }
+                    else if (model.Type == "open_air")
+                    {
+                        OpenAir openAir = new OpenAir
+                        { /*Id = model.Id,*/
+                            Name = model.Name,
+                            Performer = model.Performer,
+                            TicketsAmount = model.TicketsAmount,
+                            TicketsLeft = model.TicketsAmount,
+                            //Date = new DateTime(4562222),
+                            Place = model.Place,
+                            Price = model.Price,
+                            DriveWay = model.DriveWay,
+                            Headliner = model.Headliner
+                        };
+                        _context.OpenAirs.Add(openAir);
+                    }
+                    else
+                    {
+                        Party party = new Party
+                        { /*Id = model.Id,*/
+                            Name = model.Name,
+                            Performer = model.Performer,
+                            TicketsAmount = model.TicketsAmount,
+                            TicketsLeft = model.TicketsAmount,
+                            //Date = new DateTime(4562222),
+                            Place = model.Place,
+                            Price = model.Price,
+                            AgeQulification = model.AgeQulification
+                        };
+                        _context.Parties.Add(party);
+                    }
 
-                    _context.Concerts.Add(concert);
-                    await _context.SaveChangesAsync();
+                        await _context.SaveChangesAsync();
 
 
-                    return View(model);
+                    return RedirectToAction("Index", "Concerts");
                 }
                 else
 
@@ -69,9 +111,21 @@ namespace ConcertApplication.Controllers
         }
 
         // GET: Concerts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string concertType, string searchString)
         {
-            return View(await _context.Concerts.ToListAsync());
+            List<Concert> concerts = await _context.Concerts.ToListAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                concerts = concerts.Where(s => s.Name.Contains(searchString)
+                || s.Performer.Contains(searchString)).ToList();
+            }
+            if (!string.IsNullOrEmpty(concertType))
+            {
+                concerts = concerts.Where(x => x.Discriminator == concertType).ToList();
+            }
+            currentConcerts = concerts;
+            return View(currentConcerts);
         }
 
         // GET: Concerts/Details/5
@@ -98,24 +152,7 @@ namespace ConcertApplication.Controllers
         {
             return View();
         }
-
-        // POST: Concerts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Performer,TicketsAmount,TicketsLeft,Date,Place,Price")] Concert concert)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(concert);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(concert);
-        }
-                    
+                           
 
         private bool ConcertExists(int id)
         {

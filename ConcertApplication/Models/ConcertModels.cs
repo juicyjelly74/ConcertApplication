@@ -9,6 +9,7 @@ namespace ConcertApplication.Models
     public class Concert
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public string Performer { get; set; }
         public int TicketsAmount { get; set; }
         public int TicketsLeft { get; set; }
@@ -21,7 +22,7 @@ namespace ConcertApplication.Models
     public class ClassicConcert : Concert
     {
         public string VocalType { get; set; }
-        public string Name { get; set; }
+        public string ClassicalConcertName { get; set; }
         public string Composer { get; set; }
     }
     public class Party : Concert
@@ -43,17 +44,33 @@ namespace ConcertApplication.Models
 
 
     public class ConcertModel
-    {      
-        [Required]
+    {
+        public string Type { get; set; }
+        
+        public string Name { get; set; }
+        
         public string Performer { get; set; }
-        [Required]
+        
         public int TicketsAmount { get; set; }
+
         //[Required]
         //public DateTime ConcertDate { get; set; }
-        [Required]
+        
         public string Place { get; set; }
-        [Required]
+        
         public int Price { get; set; }
+
+        public string VocalType { get; set; }
+
+        public string ClassicalConcertName { get; set; }
+
+        public string Composer { get; set; }
+
+        public string DriveWay { get; set; }
+
+        public string Headliner { get; set; }
+
+        public int AgeQulification { get; set; }
 
     }
 }
