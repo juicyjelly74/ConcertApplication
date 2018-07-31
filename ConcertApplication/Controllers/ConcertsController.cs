@@ -1,13 +1,12 @@
-﻿using System;
+﻿using ConcertApplication.Data;
+using ConcertApplication.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ConcertApplication.Data;
-using ConcertApplication.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ConcertApplication.Controllers
 {
@@ -122,7 +121,7 @@ namespace ConcertApplication.Controllers
             }
             if (!string.IsNullOrEmpty(concertType))
             {
-                concerts = concerts.Where(x => x.Discriminator == concertType).ToList();
+                concerts = concerts.Where(x => x.Type == concertType).ToList();
             }
             currentConcerts = concerts;
             return View(currentConcerts);

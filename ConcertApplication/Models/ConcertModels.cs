@@ -16,7 +16,8 @@ namespace ConcertApplication.Models
         public DateTime Date { get; set; }
         public string Place { get; set; }
         public double Price { get; set; }
-        public string Discriminator { get; set; }
+
+        public string Type { get; set; }
     }
 
     public class ClassicConcert : Concert
