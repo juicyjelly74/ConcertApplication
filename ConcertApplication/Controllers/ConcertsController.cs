@@ -184,8 +184,8 @@ namespace ConcertApplication.Controllers
 
                     smtpClient.Credentials = new System.Net.NetworkCredential()
                     {
-                        UserName = "juicy.jelly74@gmail.com",
-                        Password = "80297688745julia"
+                        //log
+                        //pass
                     };
 
                     smtpClient.EnableSsl = true;
