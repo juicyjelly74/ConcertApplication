@@ -1,84 +1,103 @@
-﻿
+﻿@model IEnumerable<ConcertApplication.Models.Concert>
+
 @{
     ViewData["Title"] = "Index";
 }
 <div id="concerts">
-    <h2>All concerts {{message}}</h2>
+    <h2>All concerts</h2>
 
     <table class="table">
         <thead>
-            @*<tr v-for="header in header_items">
-                <th>{{ header.text }}</th>
-            </tr>*@
             <tr>
                 <th>
-                    Type
+                    @Html.DisplayNameFor(model => model.Id)
                 </th>
                 <th>
-                    Id
+                    @Html.DisplayNameFor(model => model.Type)
                 </th>
                 <th>
-                    Name
+                    @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    Performer
+                    @Html.DisplayNameFor(model => model.Performer)
                 </th>
                 <th>
-                    TicketsAmount
+                    @Html.DisplayNameFor(model => model.TicketsAmount)
                 </th>
                 <th>
-                    TicketsLeft
+                    @Html.DisplayNameFor(model => model.TicketsLeft)
                 </th>
                 <th>
-                    Date
+                    @Html.DisplayNameFor(model => model.Date)
                 </th>
                 <th>
-                    Place
+                    @Html.DisplayNameFor(model => model.Place)
                 </th>
                 <th>
-                    Price
+                    @Html.DisplayNameFor(model => model.Price)
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in concert_items">
-                <td>{{ item.discriminator }}</td>
-                <td>{{ item.id }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.performer }}</td>
-                <td>{{ item.ticketsAmount }}</td>
-                <td>{{ item.ticketsLeft }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.place }}</td>
-                <td>{{ item.price }}</td>
-
+            @foreach (var item in Model)
+            {
+            <tr>
                 <td>
-                    <button class="btn" type="button" v-on:click="get_details(item.id)">Details</button>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Performer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketsAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketsLeft)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Place)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
             </tr>
+            }
         </tbody>
     </table>
 </div>
-@*<div id="map_app">
-    <label>
-        AutoComplete
-        <gmap-autocomplete @place_changed="setPlace">
-            </gmap-autocomplete>
-            <button v-on:click="usePlace">Add</button>
-</label>
-    <br />
+    @*<div id="map_app">
+            <label>
+                AutoComplete
+                <gmap-autocomplete @place_changed="setPlace">
+                    </gmap-autocomplete>
+                    <button v-on:click="usePlace">Add</button>
+        </label>
+            <br />
 
-    <gmap-map style="width: 600px; height: 300px;" :zoom="1" :center="{lat: 0, lng: 0}">
-        <GmapMarker v-for="(marker, index) in markers"
-                    :key="index"
-                    :position="marker.position" />
-        <GmapMarker v-if="this.place"
-                    label="★"
-                    :position="{
-          lat: this.place.geometry.location.lat(),
-          lng: this.place.geometry.location.lng(),
-        }" />
-        </gmap-map>
+            <gmap-map style="width: 600px; height: 300px;" :zoom="1" :center="{lat: 0, lng: 0}">
+                <GmapMarker v-for="(marker, index) in markers"
+                            :key="index"
+                            :position="marker.position" />
+                <GmapMarker v-if="this.place"
+                            label="★"
+                            :position="{
+                  lat: this.place.geometry.location.lat(),
+                  lng: this.place.geometry.location.lng(),
+                }" />
+                </gmap-map>
 
 
-</div>*@
+        </div>*@

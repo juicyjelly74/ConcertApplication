@@ -19,6 +19,13 @@ namespace ConcertApplication.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Concert>()
+            .HasDiscriminator<string>(nameof(Concert.Type))
+            .HasValue<ClassicConcert>(nameof(ClassicConcert))
+            .HasValue<OpenAir>(nameof(OpenAir))
+            .HasValue<Party>(nameof(Party));
+
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);

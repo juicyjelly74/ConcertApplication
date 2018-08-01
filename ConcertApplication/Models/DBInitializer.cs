@@ -52,7 +52,7 @@ namespace ConcertApplication.Models
                 Price = 10
             };
 
-            Concert concert = await context.Concerts.FindAsync(party);
+            Concert concert = await context.Concerts.FirstOrDefaultAsync(c => c.Name == party.Name);
 
             if (concert == null)
             {

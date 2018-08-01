@@ -1,108 +1,91 @@
-﻿
+﻿@model ConcertApplication.Models.Concert
+
 @{
     ViewData["Title"] = "Add";
 }
 
-<h2>Add</h2>
-
-<h4>Concert</h4>
+<h2>Add Concert</h2>
 <hr />
 <div id="creation_concert">
     <div class="row">
         <div class="col-md-4">
-
-            <form asp-antiforgery="true">
+            <form asp-action="Add">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" class="form-control"
-                           id="concert_name" name="concert_name" v-model="concert_name" placeholder="concert_name" />
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Concert performer</label>
-                    <input type="text" class="form-control"
-                           id="concert_performer" name="concert_performer" v-model="concert_performer" placeholder="concert_performer" />
+                    <label asp-for="Performer" class="control-label"></label>
+                    <input asp-for="Performer" class="form-control" />
+                    <span asp-validation-for="Performer" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
-                    <label>Tickets amount</label>
-                    <input type="number" class="form-control"
-                           id="tickets_amount" name="tickets_amount" v-model="tickets_amount" placeholder="tickets_amount" />
+                    <label asp-for="TicketsAmount" class="control-label"></label>
+                    <input asp-for="TicketsAmount" class="form-control" />
+                    <span asp-validation-for="TicketsAmount" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
-                    <label>Concert date</label>
-                    <input type="datetime-local" class="form-control"
-                           id="tickets_amount" name="concert_date" v-model="concert_date" placeholder="concert_date" />
+                    <label asp-for="TicketsLeft" class="control-label"></label>
+                    <input asp-for="TicketsLeft" class="form-control" />
+                    <span asp-validation-for="TicketsLeft" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
-                    <label>Place</label>
-                    <input type="text" class="form-control"
-                           id="place" name="place" v-model="place" placeholder="place" />
+                    <label asp-for="Date" class="control-label"></label>
+                    <input asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
-                    <label>Price</label>
-                    <input type="number" class="form-control"
-                           id="price" name="price" v-model="price" placeholder="price" />
+                    <label asp-for="Place" class="control-label"></label>
+                    <input asp-for="Place" class="form-control" />
+                    <span asp-validation-for="Place" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
-                    <label>Type</label>
-                    <select id="concert_type" name="concert_type" class="form-control" v-model="concert_type">
-                        <option value="classical">Classical</option>
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Type" class="control-label"></label>
+                    <select id="select_type" asp-for="Type" class="form-control" v-model="selected" v-on:change="sortBy">
+                        <option disabled>Select type</option>
+                        <option value="classical">Classical Concert</option>
                         <option value="open_air">Open Air</option>
                         <option value="party">Party</option>
                     </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
-                <div v-if="concert_type === 'classical'">
-                    <div class="form-group">
-                        <label>VocalType</label>
-                        <input type="text" class="form-control"
-                               id="vocal_type" name="vocal_type" v-model="vocal_type" placeholder="vocal_type" />
+                <div id="DivContainer">
+                    <div id="classical_part" v-show="selected == 'classical'" class="form-group hidden">
+                        @Html.Partial("AddPartials/_ClassicalPartial")
                     </div>
-
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control"
-                               id="name" name="name" v-model="name" placeholder="name" />
+                    <div id="open_air_part" v-show="selected == 'open_air'" class="form-group hidden">
+                        @Html.Partial("AddPartials/_ClassicalPartial")
                     </div>
-
-                    <div class="form-group">
-                        <label>Composer</label>
-                        <input type="text" class="form-control"
-                               id="composer" name="composer" v-model="composer" placeholder="composer" />
+                    <div id="party_part" v-show="selected == 'party'" class="form-group hidden">
+                        @Html.Partial("AddPartials/_ClassicalPartial")
                     </div>
-                </div>
-                <div v-else-if="concert_type === 'open_air'">
                     <div class="form-group">
-                        <label>Drive Way</label>
-                        <input type="text" class="form-control"
-                               id="drive_way" name="drive_way" v-model="drive_way" placeholder="drive_way" />
+                        <input type="submit" value="Create" class="btn btn-default" />
                     </div>
-
-                    <div class="form-group">
-                        <label>Headliner</label>
-                        <input type="text" class="form-control"
-                               id="headliner" name="headliner" v-model="headliner" placeholder="headliner" />
-                    </div>
-                </div>
-                <div v-else-if="concert_type === 'party'">
-                    <div class="form-group">
-                        <label>Age Qualification</label>
-                        <input type="number" class="form-control"
-                               id="age_qualification" name="age_qualification"
-                               v-model="age_qualification" placeholder="age_qualification" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button class="btn" v-on:click="create_concert">Create</button>
-
                 </div>
             </form>
         </div>
     </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
+<script>
+    $("#select_type").change(function () {
+        $("#DivContainer div").addClass("hidden");
+        var selectedDiv = $("#select_type").val();
+
+        $("#" + selectedDiv).removeClass("hidden");
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

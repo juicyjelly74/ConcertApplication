@@ -16,7 +16,7 @@ namespace ConcertApplication.Models
         public DateTime Date { get; set; }
         public string Place { get; set; }
         public double Price { get; set; }
-        public string Discriminator { get; set; }
+        public string Type { get; set; }
     }
 
     public class ClassicConcert : Concert
@@ -27,7 +27,7 @@ namespace ConcertApplication.Models
     }
     public class Party : Concert
     {
-        public int AgeQulification { get; set; }
+        public int AgeQualification { get; set; }
     }
     public class OpenAir : Concert
     {
@@ -54,8 +54,8 @@ namespace ConcertApplication.Models
         public int TicketsAmount { get; set; }
 
         //[Required]
-        //public DateTime ConcertDate { get; set; }
-        
+        public DateTime ConcertDate { get; set; }
+
         public string Place { get; set; }
         
         public int Price { get; set; }
@@ -70,7 +70,7 @@ namespace ConcertApplication.Models
 
         public string Headliner { get; set; }
 
-        public int AgeQulification { get; set; }
+        public int AgeQualification { get; set; }
 
     }
 }

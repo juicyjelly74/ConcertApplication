@@ -1,74 +1,91 @@
-﻿@{
+﻿@model ConcertApplication.Models.Concert
+
+@{
     ViewData["Title"] = "Details";
 }
 
 <h2>Details</h2>
-
-<div id="concert_details">
-    <h4>Concert </h4>
+<div>
+    <b>@ViewData["result"]</b>
+    <br />
+</div>
+<div>
+    <h4>Court</h4>
     <hr />
+
     <dl class="dl-horizontal">
         <dt>
-            Type
+            @Html.DisplayNameFor(model => model.Id)
         </dt>
         <dd>
-            {{item.discriminator}}
+            @Html.DisplayFor(model => model.Id)
         </dd>
         <dt>
-            Id
+            @Html.DisplayNameFor(model => model.Type)
         </dt>
         <dd>
-            {{item.id}}
+            @Html.DisplayFor(model => model.Type)
         </dd>
         <dt>
-            Performer
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd>
-            {{item.performer}}
+            @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            Tickets Amount
+            @Html.DisplayNameFor(model => model.Performer)
         </dt>
         <dd>
-            {{item.ticketsAmount}}
+            @Html.DisplayFor(model => model.Performer)
         </dd>
         <dt>
-            Tickets Left
+            @Html.DisplayNameFor(model => model.TicketsAmount)
         </dt>
         <dd>
-            {{item.ticketsLeft}}
+            @Html.DisplayFor(model => model.TicketsAmount)
         </dd>
         <dt>
-            Date
+            @Html.DisplayNameFor(model => model.TicketsLeft)
         </dt>
         <dd>
-            {{item.date}}
+            @Html.DisplayFor(model => model.TicketsLeft)
         </dd>
         <dt>
-            Place
+            @Html.DisplayNameFor(model => model.Date)
         </dt>
         <dd>
-            {{item.place}}
+            @Html.DisplayFor(model => model.Date)
         </dd>
         <dt>
-            Price
+            @Html.DisplayNameFor(model => model.Place)
         </dt>
         <dd>
-            {{item.price}}
+            @Html.DisplayFor(model => model.Place)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        @if (Model.Type == nameof(ClassicConcert))
+        {
+            @await Html.PartialAsync("DetailsPartials/_ClassicalDetailsPartial")
+        }
+        @if (Model.Type == nameof(OpenAir))
+        {
+            @await Html.PartialAsync("DetailsPartials/_OpenAirDetailsPartial")
+        }
+        @if (Model.Type == nameof(Party))
+        {
+            @await Html.PartialAsync("DetailsPartials/_PartyDetailsPartial")
+        }
     </dl>
+
+    <form asp-action="Add">
+        <input asp-action="BookTicket" type="submit" value="Book Ticket" class="btn btn-default" asp-route-id="@Model.Id" />
+    </form>
 </div>
-
-
-@*<template v-if="item.concert_type === 'classical'">
-    <td>{{ item.vocalType }}</td>
-    <td>{{ item.name }}</td>
-    <td>{{ item.composer }}</td>
-</template>
-<template v-else-if="item.concert_type === 'open_air'">
-    <td>{{ item.driveWay }}</td>
-    <td>{{ item.headliner }}</td>
-</template>
-<template v-else-if="item.concert_type === 'party'">
-    <td>{{ item.ageQulification }}</td>
-</template>*@
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

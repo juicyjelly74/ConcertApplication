@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using ConcertApplication.Data;
 using ConcertApplication.Models;
 using Microsoft.AspNetCore.Authorization;
+using ConcertApplication.Services;
+using System.Net.Mail;
+using System.Net;
 
 namespace ConcertApplication.Controllers
 {
@@ -39,8 +42,7 @@ namespace ConcertApplication.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(ConcertModel model)
+        public async Task<IActionResult> Add([FromBody]ConcertModel model)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +94,7 @@ namespace ConcertApplication.Controllers
                             //Date = new DateTime(4562222),
                             Place = model.Place,
                             Price = model.Price,
-                            AgeQulification = model.AgeQulification
+                            AgeQualification = model.AgeQualification
                         };
                         _context.Parties.Add(party);
                     }
@@ -122,7 +124,7 @@ namespace ConcertApplication.Controllers
             }
             if (!string.IsNullOrEmpty(concertType))
             {
-                concerts = concerts.Where(x => x.Discriminator == concertType).ToList();
+                concerts = concerts.Where(x => x.Type == concertType).ToList();
             }
             currentConcerts = concerts;
             return View(currentConcerts);
@@ -144,6 +146,68 @@ namespace ConcertApplication.Controllers
             }
 
             return View(concert);
+        }
+        
+        public async Task<IActionResult> BookTicket(int? id)
+        {
+            Concert concert = await _context.Concerts.SingleOrDefaultAsync(c => c.Id == id);
+
+            if (concert == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var currentConcert = await _context.Concerts
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+                //var user = await GetCurrentUserId();
+
+                if (currentConcert.TicketsLeft > 0)
+                {
+                    Ticket ticket = new Ticket
+                    {
+                        IdConcert = currentConcert.Id //,
+                                                      //IdUser = User.Identity.
+                    };
+
+                    currentConcert.TicketsLeft--;
+
+                    await _context.Tickets.AddAsync(ticket);
+                    await _context.SaveChangesAsync();
+
+                    MailMessage mail = new MailMessage("fromm@gmail.com", "julia08091997@mail.ru");
+                    mail.Subject = "Ticket Booking";
+                    mail.Body = "Your ticket booking for the concert " + currentConcert.ToString() + "was succesfully completed.";
+
+                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+
+                    smtpClient.Credentials = new System.Net.NetworkCredential()
+                    {
+                        UserName = "juicy.jelly74@gmail.com",
+                        Password = "80297688745julia"
+                    };
+
+                    smtpClient.EnableSsl = true;
+                    ServicePointManager.ServerCertificateValidationCallback = delegate (object s,
+                            System.Security.Cryptography.X509Certificates.X509Certificate certificate,
+                            System.Security.Cryptography.X509Certificates.X509Chain chain,
+                            System.Net.Security.SslPolicyErrors sslPolicyErrors)
+                    {
+                        return true;
+                    };
+
+                    smtpClient.Send(mail);
+                    ViewData["result"] = "Your ticket is booked. Email confirmation is send to your email.";
+                }
+                else
+                {
+                    ViewData["result"] = "No more tickets left";
+                }
+
+            }
+
+            return RedirectToAction("Details", new { id = id });
         }
 
         [Authorize(Roles = "Admin")]

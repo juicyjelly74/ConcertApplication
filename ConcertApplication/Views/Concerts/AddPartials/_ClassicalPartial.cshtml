@@ -1,0 +1,21 @@
+﻿@model ConcertApplication.Models.ClassicConcert
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label asp-for="ClassicalConcertName" class="control-label"></label>
+            <input asp-for="ClassicalConcertName" class="form-control" />
+            <span asp-validation-for="ClassicalConcertName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="VocalType" class="control-label"></label>
+            <input asp-for="VocalType" class="form-control" />
+            <span asp-validation-for="VocalType" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Composer" class="control-label"></label>
+            <input asp-for="Composer" class="form-control" />
+            <span asp-validation-for="Composer" class="text-danger"></span>
+        </div>
+    </div>
+</div>
