@@ -1,0 +1,15 @@
+﻿.carousel-caption p {
+    font-family: Pacifico;
+    font-size: 50px;
+    text-shadow: 3px 3px 0px black;
+    font-weight: 700;
+}
+.no-highlight:focus {
+    outline-width: 0;
+}
+.no-highlight:focus {
+    box-shadow: none;
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: none;
+}
