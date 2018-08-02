@@ -1,15 +1,11 @@
-﻿@model ConcertApplication.Models.Concert
-
-@{
-    ViewData["Title"] = "Add";
-}
+﻿@model ConcertApplication.Models.ConcertModel
 
 <h2>Add Concert</h2>
 <hr />
-<div id="creation_concert">
+<div id="add_concert_app">
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Add">
+            <form asp-controller="Concerts" asp-action="Add" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
@@ -23,18 +19,13 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="TicketsAmount" class="control-label"></label>
-                    <input asp-for="TicketsAmount" class="form-control" />
+                    <input asp-for="TicketsAmount" min="0" class="form-control" />
                     <span asp-validation-for="TicketsAmount" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="TicketsLeft" class="control-label"></label>
-                    <input asp-for="TicketsLeft" class="form-control" />
-                    <span asp-validation-for="TicketsLeft" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Date" class="control-label"></label>
-                    <input asp-for="Date" class="form-control" />
-                    <span asp-validation-for="Date" class="text-danger"></span>
+                    <label asp-for="ConcertDate" class="control-label"></label>
+                    <input asp-for="ConcertDate" class="form-control" />
+                    <span asp-validation-for="ConcertDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Place" class="control-label"></label>
@@ -43,12 +34,12 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Price" class="control-label"></label>
-                    <input asp-for="Price" class="form-control" />
+                    <input asp-for="Price" min="0" class="form-control" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Type" class="control-label"></label>
-                    <select id="select_type" asp-for="Type" class="form-control" v-model="selected" v-on:change="sortBy">
+                    <select id="select_type" asp-for="Type" class="form-control" v-model="selected">
                         <option disabled>Select type</option>
                         <option value="classical">Classical Concert</option>
                         <option value="open_air">Open Air</option>
@@ -56,15 +47,15 @@
                     </select>
                     <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
-                <div id="DivContainer">
-                    <div id="classical_part" v-show="selected == 'classical'" class="form-group hidden">
+                <div>
+                    <div id="classical_part" v-show="selected == 'classical'" class="form-group">
                         @Html.Partial("AddPartials/_ClassicalPartial")
                     </div>
-                    <div id="open_air_part" v-show="selected == 'open_air'" class="form-group hidden">
-                        @Html.Partial("AddPartials/_ClassicalPartial")
+                    <div id="open_air_part" v-show="selected == 'open_air'" class="form-group">
+                        @Html.Partial("AddPartials/_OpenAirPartial")
                     </div>
-                    <div id="party_part" v-show="selected == 'party'" class="form-group hidden">
-                        @Html.Partial("AddPartials/_ClassicalPartial")
+                    <div id="party_part" v-show="selected == 'party'" class="form-group">
+                        @Html.Partial("AddPartials/_PartyPartial")
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-default" />
@@ -78,14 +69,6 @@
         <a asp-action="Index">Back to List</a>
     </div>
 </div>
-<script>
-    $("#select_type").change(function () {
-        $("#DivContainer div").addClass("hidden");
-        var selectedDiv = $("#select_type").val();
-
-        $("#" + selectedDiv).removeClass("hidden");
-    });
-</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

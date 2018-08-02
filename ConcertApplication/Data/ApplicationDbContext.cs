@@ -34,6 +34,6 @@ namespace ConcertApplication.Data
         public DbSet<ClassicConcert> ClassicConcerts { get; set; }
         public DbSet<Party> Parties { get; set; }
         public DbSet<OpenAir> OpenAirs { get; set; }
-        public DbSet<ConcertApplication.Models.Ticket> Tickets { get; set; }
+        public DbSet<TicketOrder> Tickets { get; set; }
     }
 }

@@ -1,8 +1,7 @@
-﻿@model ConcertApplication.Models.OpenAir
+﻿@model ConcertApplication.Models.ConcertModel
 
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Add">
             <div class="form-group">
                 <label asp-for="DriveWay" class="control-label"></label>
                 <input asp-for="DriveWay" class="form-control" />
@@ -13,6 +12,5 @@
                 <input asp-for="Headliner" class="form-control" />
                 <span asp-validation-for="Headliner" class="text-danger"></span>
             </div>
-        </form>
     </div>
 </div>

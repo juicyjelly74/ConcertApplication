@@ -48,6 +48,7 @@
                         </span>
                     </span>
                 </form>
+
             </div>
         </div>
     </nav>
@@ -83,10 +84,12 @@
 
     <link rel="stylesheet" href="~/css/custom_styles.css" />
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="~/js/vue_code.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js" asp-append-version="true"></script>
+    <script src="~/js/vue_code.js" asp-append-version="true"></script>
     <script src="~/js/vue-google-maps.js"></script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLj3fIg-xtc4__8yzjyv_1VZOHefPvqe0"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

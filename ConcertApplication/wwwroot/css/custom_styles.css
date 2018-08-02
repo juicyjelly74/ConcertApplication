@@ -13,3 +13,8 @@
     margin: 5px 1px 3px 0px;
     border: none;
 }
+.border-message {
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid black;
+}
