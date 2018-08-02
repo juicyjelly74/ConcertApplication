@@ -27,13 +27,23 @@ namespace ConcertApplication.Controllers
             _context = context;
             _userManager = userManager;
         }
+        
+        public List<string> GetPlaces()
+        {
+            List<Concert> concerts = _context.Concerts.ToList();
+            List<string> places = new List<string>();
+            foreach (Concert c in concerts)
+            {
+                places.Add(c.Place);
+            }
+            return places;
+        }
 
         [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             return View();
         }
-
 
         [Authorize(Roles = "Admin")]
         [HttpPost]

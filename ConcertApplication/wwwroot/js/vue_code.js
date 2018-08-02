@@ -1,75 +1,87 @@
-﻿var concert_details = new Vue({
-    el: '#concert_details',
+﻿var add_concert_app = new Vue({
+    el: '#add_concert_app',
     data: {
-        item: null
-    },
-    mounted() {
-        axios
-            .get('/concerts/details/1')
-            .then(response => (this.item = response.data));
-    },
-    methods: {
+        selected: null
     }
 });
 
-var creation_concert = new Vue({
-    el: '#creation_concert',
-    data: {     
-        selected: null
+Vue.component('concert-map', {
+    data: function () {
+        return {
+            mapName: 'concert-map',
+            markerCoordinates: [{
+                latitude: 51.501527,
+                longitude: -0.1921837
+            }, {
+                latitude: 51.505874,
+                longitude: -0.1838486
+            }, {
+                latitude: 51.4998973,
+                longitude: -0.202432
+            }],
+            map: null,
+            bounds: null,
+            markers: [],
+            addresses: [],
+            searchAddressInput: '',
+            currentAddress: '',
+            currentLocation: '',
+            addresses: []
+        }
+    },
+    mounted() {
 
-        /*name: null,
-        concert_performer: null,
-        tickets_amount: null,
-        concert_date: null,
-        place: null,
-        price: null,
-        concert_type: null,
-        vocal_type: null,
-        classical_concert_name: null,
-        composer: null,
-        drive_way: null,
-        headliner: null,
-        age_qualification: null*/
+        this.getMarkerCoordinates();
 
+        this.bounds = new google.maps.LatLngBounds();
+        const element = document.getElementById('concert-map')
+        const mapCentre = this.markerCoordinates[0]
+        const options = {
+            center: new google.maps.LatLng(mapCentre.latitude, mapCentre.longitude)
+        }
+        this.map = new google.maps.Map(element, options);
+        this.markerCoordinates.forEach((coord) => {
+            const position = new google.maps.LatLng(coord.latitude, coord.longitude);
+            const marker = new google.maps.Marker({
+                position,
+                map: this.map
+            });
+            this.markers.push(marker);
+            this.map.fitBounds(this.bounds.extend(position));
+        });
     },
     methods: {
-        //create_concert: function () {
-        //    try {
-        //        var data = {
-        //            "performer": this.concert_performer,
-        //            "ticketsAmount": this.tickets_amount,
-        //            "concertDate": this.concert_date,
-        //            "place": this.place,
-        //            "price": this.price,
-        //            "type": this.concert_type,
-        //            "vocalType": this.vocal_type,
-        //            "classicalConcertName": this.classical_concert_name,
-        //            "composer": this.composer,
-        //            "driveWay": this.drive_way,
-        //            "headliner": this.headliner,
-        //            "ageQualification": this.age_qualification
-        //        };
-        //        var error;
-        //        axios({
-        //            method: 'post',
-        //            url: '/concerts/add',
-        //            data
-        //        })
-        //            .then(function (response) {
-        //                console.log("successfully added!");
-        //            })
-        //            .catch(function (error) {
-        //                console.log(error);
-        //            });
-        //    } catch (ex) {
-        //        console.log(ex);
-        //    }
-        //    return false;
-        //}
-
-
-        sortBy: function () {
-            console.log(this.sorting);
+        searchLocation: function () {
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': this.searchAddressInput }, (results, status) => {
+                if (status === 'OK') {
+                    this.currentLocation.lat = results[0].geometry.location.lat();
+                    this.currentLocation.lng = results[0].geometry.location.lng();
+                }
+            });
         },
-    }
+        getMarkerCoordinates: function () {
+            this.getAddresses();
+            var geocoder = new google.maps.Geocoder();
+            this.addresses.forEach((address) => {
+                geocoder.geocode({ 'address': this.address }, (results, status) => {
+                    if (status === 'OK') { 
+                        this.currentAddress.lat = results[0].geometry.location.lat();
+                        this.currentAddress.lng = results[0].geometry.location.lng();
+                        this.markerCoordinates.push(currentAddress);
+                    }
+                });
+            });
+        },
+        getAddresses: function () {
+            axios
+                .get('/concerts/getPlaces')
+                .then(response => (this.addresses = response.data));
+        }
+    },
+    template: '#temp'
+});
+
+var aaa = new Vue({
+    el: "#aaa"
 });
