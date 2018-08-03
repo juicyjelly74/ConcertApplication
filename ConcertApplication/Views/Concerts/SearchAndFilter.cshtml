@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+<h2>Search & Filter</h2>
+
+
+<div id="search_app">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="search-wrapper">
+                <div class="form-group">
+                    <label>Search</label>
+                    <input class="form-control" type="text" v-model="search" placeholder="Search" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="search-wrapper">
+                <div class="form-group">
+                    <label>Filter</label>
+                    <select class="form-control" type="text" v-model="typeFilter" placeholder="Filter">
+                        <option value="">All</option>
+                        <option value="ClassicConcert">ClassicalConcert</option>
+                        <option value="OpenAir">OpenAir</option>
+                        <option value="Party">Party</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div v-if="filteredList.length == 0">
+            <div class="card">
+                <header>No such concerts.</header>
+            </div>
+        </div>
+        <div class="card" v-for="concert in filteredList">
+            <card_body v-bind:href="concert.name" target="_blank">
+                <img v-bind:src="concert.img" />
+                <header>{{ concert.name }}</header>
+                <small>Performer: {{ concert.performer }}</small>
+                <small>Type: {{ concert.type }}</small>
+                <small>Date: {{ concert.date }}</small>
+                <small>Place: {{ concert.place }}</small>
+                <small>Price: {{ concert.price }}</small>
+                <small>TicketsAmount: {{ concert.ticketsAmount }}</small>
+                <small>TicketsLeft: {{ concert.ticketsLeft }}</small>
+            </card_body>
+            <div class="inline-div">
+                <a class="btn form-control" v-bind:href="'Concerts/Edit/'+ concert.id">Edit</a>
+                <a class="btn form-control" v-bind:href="'Concerts/Details/'+ concert.id">Details</a>
+                <a class="btn form-control" v-bind:href="'Concerts/Delete/'+ concert.id">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/vue_search.js" asp-append-version="true"></script>

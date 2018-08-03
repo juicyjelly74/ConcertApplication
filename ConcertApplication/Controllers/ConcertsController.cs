@@ -27,7 +27,10 @@ namespace ConcertApplication.Controllers
             _context = context;
             _userManager = userManager;
         }
-        
+        public List<Concert> GetConcerts()
+        {
+            return _context.Concerts.ToList();
+        }
         public List<string> GetPlaces()
         {
             List<Concert> concerts = _context.Concerts.ToList();
@@ -117,6 +120,11 @@ namespace ConcertApplication.Controllers
                 concerts = concerts.Where(x => x.Type == concertType).ToList();
             }
             return View(concerts);
+        }
+
+        public IActionResult SearchAndFilter()
+        {
+            return View();
         }
 
         // GET: Concerts/Details/5
