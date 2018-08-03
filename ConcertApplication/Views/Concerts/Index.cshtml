@@ -71,7 +71,9 @@
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
             }
@@ -79,11 +81,14 @@
     </table>
 </div>
 
-<div id="aaa">
+
+<div id="concert_map_app">
     <concert-map></concert-map>
 </div>
 
-<template id="temp">
+<template id="concert_map_template">
     <div id="concert-map" style="width:1100px;height:500px;">
     </div>
 </template>
+
+<script src="~/js/vue_map.js" asp-append-version="true"></script>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ConcertApplication.Models
         public int TicketsLeft { get; set; }
         public DateTime Date { get; set; }
         public string Place { get; set; }
-        public double Price { get; set; }
+        public int Price { get; set; }
         public string Type { get; set; }
 
         public Concert() { }
@@ -76,9 +77,15 @@ namespace ConcertApplication.Models
 
     public class ConcertModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Select Type")]
         public string Type { get; set; }
-        
+
+
+        public List<SelectListItem> Types { set; get; }
+
+
         [Required(ErrorMessage = "Enter Name")]
         public string Name { get; set; }
 
@@ -88,6 +95,8 @@ namespace ConcertApplication.Models
         [Required(ErrorMessage = "Enter Total Tickets Amount. It must be a positive number.")]
         [Range(0, Int32.MaxValue)]
         public int TicketsAmount { get; set; }
+        
+        public int TicketsLeft { get; set; }
 
         [Required(ErrorMessage = "Enter ConcertDate")]
         public DateTime ConcertDate { get; set; }

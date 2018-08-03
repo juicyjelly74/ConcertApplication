@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ConcertApplication.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ConcertsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -214,6 +214,162 @@ namespace ConcertApplication.Controllers
                     return RedirectToAction("Details", new { id = id });
                 }
             }
+        }
+
+        // GET: Concerts/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var concert = await _context.Concerts.SingleOrDefaultAsync(m => m.Id == id);
+            if (concert == null)
+            {
+                return NotFound();
+            }
+
+            ConcertModel model = new ConcertModel
+            {
+                Id = concert.Id,
+                Name = concert.Name,
+                Performer = concert.Performer,
+                TicketsAmount = concert.TicketsAmount,
+                TicketsLeft = concert.TicketsLeft,
+                ConcertDate = concert.Date,
+                Place = concert.Place,
+                Price = concert.Price,
+                Type = concert.Type,
+                Types = new List<SelectListItem> {
+                    new SelectListItem {Text = "Classical concert", Value = "classical"},
+                    new SelectListItem {Text = "Open air", Value = "open_air"},
+                    new SelectListItem {Text = "Party", Value = "party"}
+                }
+            };
+            
+            if (concert.Type == "classical")
+            {
+                ClassicConcert currentClassic = await _context.ClassicConcerts.SingleOrDefaultAsync(c => c.Id == id);
+                model.ClassicalConcertName = currentClassic.ClassicalConcertName;
+                model.Composer = currentClassic.Composer;
+                model.VocalType = currentClassic.VocalType;
+            }
+            else if (concert.Type == "open_air")
+            {
+                OpenAir currentOpenAir = await _context.OpenAirs.SingleOrDefaultAsync(c => c.Id == id);
+                model.Headliner = currentOpenAir.Headliner;
+                model.DriveWay = currentOpenAir.DriveWay;
+            }
+            else if (concert.Type == "party")
+            {
+                Party currentParty = await _context.Parties.SingleOrDefaultAsync(c => c.Id == id);
+                model.AgeQualification = currentParty.AgeQualification;
+            }
+            return View(model);
+        }
+
+        // POST: Concerts/Edit/5
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ConcertModel concert)
+        {            
+            if (id != concert.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    List<Concert> models = new List<Concert>();
+                    ClassicConcert currentClassic = null;
+                    OpenAir currentOpenAir = null;
+                    Party currentParty = null;
+
+                    if (concert.Type == "classical")
+                    {
+                        currentClassic = await _context.ClassicConcerts.SingleOrDefaultAsync(c => c.Id == id);
+                        currentClassic.ClassicalConcertName = concert.ClassicalConcertName;
+                        currentClassic.Composer = concert.Composer;
+                        currentClassic.VocalType = concert.VocalType;
+                    }
+                    else if (concert.Type == "open_air")
+                    {
+                        currentOpenAir = await _context.OpenAirs.SingleOrDefaultAsync(c => c.Id == id);
+                        currentOpenAir.DriveWay = concert.DriveWay;
+                        currentOpenAir.Headliner = concert.Headliner;
+                    }
+                    else
+                    {
+                        currentParty = await _context.Parties.SingleOrDefaultAsync(c => c.Id == id);
+                        currentParty.AgeQualification = (int)concert.AgeQualification;
+                    }
+                    models.Add(currentClassic);
+                    models.Add(currentOpenAir);
+                    models.Add(currentParty);
+                    foreach (Concert c in models)
+                    {
+                        if (c != null)
+                        {
+                            c.Name = concert.Name;
+                            c.Performer = concert.Performer;
+                            c.TicketsAmount = concert.TicketsAmount;
+                            c.TicketsLeft = concert.TicketsLeft;
+                            c.Date = concert.ConcertDate;
+                            c.Place = concert.Place;
+                            c.Price = concert.Price;
+                            _context.Update(c);
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ConcertExists(concert.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(concert);
+        }
+
+        // GET: Concerts/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var concert = await _context.Concerts
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (concert == null)
+            {
+                return NotFound();
+            }
+
+            return View(concert);
+        }
+
+        // POST: Concerts/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var concert = await _context.Concerts.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Concerts.Remove(concert);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool ConcertExists(int id)

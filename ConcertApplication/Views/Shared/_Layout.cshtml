@@ -16,6 +16,10 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLj3fIg-xtc4__8yzjyv_1VZOHefPvqe0"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js" asp-append-version="true"></script>
+    <script src="~/js/vue-google-maps.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -35,10 +39,8 @@
                     <li><a asp-area="" asp-controller="Concerts" asp-action="Index">Concerts</a></li>
                 </ul>
                 @await Html.PartialAsync("_AdminPartial")
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
                 @await Html.PartialAsync("_LoginPartial")
+                
                 <form asp-controller="Concerts" asp-action="Index" method="get">
                     <span class="col-sm-3 col-md-3 pull-right input-group">
                         <input type="text" class="no-highlight form-control" placeholder="Search" name="SearchString" id="SearchString">
@@ -49,6 +51,7 @@
                         </span>
                     </span>
                 </form>
+
 
             </div>
         </div>
@@ -84,11 +87,6 @@
 
 
     <link rel="stylesheet" href="~/css/custom_styles.css" />
-
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js" asp-append-version="true"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js" asp-append-version="true"></script>
-    <script src="~/js/vue_code.js" asp-append-version="true"></script>
-    <script src="~/js/vue-google-maps.js"></script>
 
 
     @RenderSection("Scripts", required: false)
