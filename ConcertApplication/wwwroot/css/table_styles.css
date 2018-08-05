@@ -6,72 +6,76 @@ th, td {
     font-weight: unset;
     padding-right: 10px;
 }
-
-.table100-head th {
-    padding-top: 10px;
-    padding-bottom: 10px;
+.limiter {
+    width: 1366px;
+    margin: 0 auto;
+}
+.concerts-table-head th {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-weight: bold;
 }
 
-.table100-body td {
+.concerts-table-body td {
     padding-top: 3px;
     padding-bottom: 3px;
 }
 
-.table100 {
+.concerts-table {
     position: relative;
-    padding-top: 60px;
+    padding-top: 45px;
 }
 
-.table100-head {
+.concerts-table-head {
     position: absolute;
     width: 100%;
     top: 0;
     left: 0;
 }
 
-.table100-body {
+.concerts-table-body {
     max-height: 585px;
     overflow: auto;
 }
 
-.table100.ver2 .table100-head {
+.concerts-table.ver2 .concerts-table-head {
     box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
-.table100.ver2 th {
+.concerts-table.ver2 th {
     font-family: afanan;
     font-size: 20px;
     line-height: 1.4;
     background-color: transparent;
 }
 
-.table100.ver2 td {
+.concerts-table.ver2 td {
     font-weight: bold;
     font-size: 14px;
     line-height: 1.2;
 }
 
-.table100.ver2 .table100-body tr {
+.concerts-table.ver2 .concerts-table-body tr {
     border-bottom: 1px solid #f2f2f2;
 }
 
 /*---------------------------------------------*/
 
-.table100.ver2 {
+.concerts-table.ver2 {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
 }
 
-    .table100.ver2 .ps__rail-y {
+    .concerts-table.ver2 .ps__rail-y {
         right: 5px;
     }
 
-        .table100.ver2 .ps__rail-y::before {
+        .concerts-table.ver2 .ps__rail-y::before {
             background-color: #ebebeb;
         }
 
-        .table100.ver2 .ps__rail-y .ps__thumb-y::before {
+        .concerts-table.ver2 .ps__rail-y .ps__thumb-y::before {
             background-color: #cccccc;
         }
 

@@ -15,5 +15,9 @@ namespace ConcertApplication.Models
         public PartyModel(ConcertModel c) : base(c) {
             Type = nameof(PartyModel);
         }
+        public void Update(ConcertViewModel model)
+        {
+            AgeQualification = (int)model.AgeQualification;
+        }
     }
 }

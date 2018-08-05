@@ -11,99 +11,122 @@
 @if (@ViewBag.Message != null)
 {
     <h2 class="text-info">Ticket booking</h2>
-    <div class="card">
-        <h3>@ViewBag.Message</h3>
-    </div>
+    @if (@ViewBag.Message2)
+    {
+        <div class="notification text-success bg-success">
+            <h3><b><i class="glyphicon glyphicon-ok"></i>&nbsp; @ViewBag.Message</b></h3>
+        </div>
+    }
+    else
+    {
+        <div class="notification text-danger bg-danger">
+            <h3><b><i class="glyphicon glyphicon-alert"></i>&nbsp; @ViewBag.Message</b></h3>
+        </div>
+    }
 }
 else
 {
     <h2>Detailed information</h2>
 }
-    <div>
-        <h3>Concert</h3>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Id)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Id)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Type)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Type)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Performer)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Performer)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.TicketsAmount)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.TicketsAmount)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.TicketsLeft)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.TicketsLeft)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.ConcertDate)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.ConcertDate)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Place)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Place)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Price)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Price)
-            </dd>
-            @if (Model.Type == nameof(ClassicalConcertModel))
-            {
-                @await Html.PartialAsync("DetailsPartials/_ClassicalDetailsPartial", Model)
-            }
-            @if (Model.Type == nameof(OpenAirModel))
-            {
-                @await Html.PartialAsync("DetailsPartials/_OpenAirDetailsPartial", Model)
-            }
-            @if (Model.Type == nameof(PartyModel))
-            {
-                @await Html.PartialAsync("DetailsPartials/_PartyDetailsPartial", Model)
-            }
-        </dl>
+<div>
+    <div id="#idDiv" data-value="@Model.Id" hidden></div>
+    <div class="row">
+        <div class="col-md-4">
+            <h3><b>Concert</b></h3>
 
-        @if (SignInManager.IsSignedIn(User))
-        {
-            @if (User.IsInRole("Admin"))
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Type)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Type)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Performer)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Performer)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.TicketsAmount)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TicketsAmount)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.TicketsLeft)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TicketsLeft)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ConcertDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ConcertDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Place)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Place)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+                @if (Model.Type == nameof(ClassicalConcertModel))
+                {
+                    @await Html.PartialAsync("DetailsPartials/_ClassicalDetailsPartial", Model)
+                }
+                @if (Model.Type == nameof(OpenAirModel))
+                {
+                    @await Html.PartialAsync("DetailsPartials/_OpenAirDetailsPartial", Model)
+                }
+                @if (Model.Type == nameof(PartyModel))
+                {
+                    @await Html.PartialAsync("DetailsPartials/_PartyDetailsPartial", Model)
+                }
+            </dl>
+
+            @if (SignInManager.IsSignedIn(User))
             {
-                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                @Html.Raw("|")
-                <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-                @Html.Raw("|")
+                @if (User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id, page = ViewBag.Page })
+                    @Html.Raw(" | ")
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.Id, page = ViewBag.Page })
+                    @Html.Raw(" | ")
+                }
             }
-        }
-        <a asp-action="Index">Back to Concerts list</a>
-        <br />
+            @Html.ActionLink("Back to List", "Index", new { page = ViewBag.Page })
+            <br />
+            @await Html.PartialAsync("DetailsPartials/_BookingTicketPartial", new ViewDataDictionary(this.ViewData))
+        </div>
+        <div class="col-md-8">
+            <div id="concert_map_app">
+                <concert-map></concert-map>
+            </div>
 
-        @await Html.PartialAsync("DetailsPartials/_BookingTicketPartial", new ViewDataDictionary(this.ViewData));
-
+            <template id="concert_map_template">
+                <div id="concert-map" style="width:700px;height:400px;border-radius: 5px;">
+                </div>
+            </template>
+            <script src="~/js/vue_details_map.js" asp-append-version="true"></script>
+        </div>
     </div>
+</div>

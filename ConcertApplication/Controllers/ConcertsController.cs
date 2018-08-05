@@ -9,18 +9,18 @@ using ConcertApplication.Data;
 using ConcertApplication.Models;
 using Microsoft.AspNetCore.Authorization;
 using ConcertApplication.Services;
-using System.Net.Mail;
-using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using ConcertApplication.ViewModels.Pagination;
 
 namespace ConcertApplication.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ConcertsController : Controller
     {
+        public const int pageSize = 5;
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostingEnvironment _appEnvironment;
@@ -37,6 +37,10 @@ namespace ConcertApplication.Controllers
         public List<ConcertModel> GetConcerts()
         {
             return _context.Concerts.ToList();
+        }
+        public ConcertModel GetConcertById(int id)
+        {
+            return _context.Concerts.SingleOrDefault(c => c.Id == id);
         }
         public List<string> GetPlaces()
         {
@@ -98,21 +102,31 @@ namespace ConcertApplication.Controllers
         }
 
         // GET: Concerts
-        public async Task<IActionResult> Index(string concertType, string searchString, int page)
+        public async Task<IActionResult> Index(string concertType, string searchString, int page = 1)
         {
-            List<ConcertModel> concerts = await _context.Concerts.ToListAsync();
+            ViewBag.Page = page;
+            IQueryable<ConcertModel> concerts = _context.Concerts;
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 concerts = concerts.Where(s => s.Name.Contains(searchString)
-                || s.Performer.Contains(searchString)).ToList();
+                || s.Performer.Contains(searchString));
             }
             if (!string.IsNullOrEmpty(concertType))
             {
-                concerts = concerts.Where(x => x.Type == concertType).ToList();
+                concerts = concerts.Where(x => x.Type == concertType);
             }
+            
+            var count = await concerts.CountAsync();
+            var items = await concerts.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            return View(concerts);
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            ConcertsPaginationViewModel viewModel = new ConcertsPaginationViewModel
+            {
+                PageViewModel = pageViewModel,
+                ConcertModels = items
+            };
+            return View(viewModel);
         }
 
         public IActionResult SearchAndFilter()
@@ -120,12 +134,15 @@ namespace ConcertApplication.Controllers
             return View();
         }
         
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? page = null)
         {
+            ViewBag.Page = page;
             if (TempData["result"] != null)
             {
                 ViewBag.Message = TempData["result"].ToString();
+                ViewBag.Message2 = TempData["success"];
                 TempData["result"] = null;
+                TempData["success"] = false;
             }
             if (id == null)
             {
@@ -168,16 +185,19 @@ namespace ConcertApplication.Controllers
             if (amount < 1)
             {
                 TempData["result"] = "Ticket amount must be a positive number equal or greater than 1.";
+                TempData["success"] = false;
                 return false;
             }
             else if (currentConcert.TicketsLeft == 0)
             {
                 TempData["result"] = "No more tickets left";
+                TempData["success"] = false;
                 return false;
             }
             else if (currentConcert.TicketsLeft > 0 && currentConcert.TicketsLeft < amount)
             {
                 TempData["result"] = "Only " + currentConcert.TicketsLeft + " tickets left.";
+                TempData["success"] = false;
                 return false;
             }
             return true;
@@ -217,20 +237,21 @@ namespace ConcertApplication.Controllers
                     await _context.Tickets.AddAsync(ticket);
                     await _context.SaveChangesAsync();
 
-                    string emailAddress = /*currentUser.Email;
-                    emailAddress =*/ "julia08091997@mail.ru";
+                    string emailAddress = currentUser.Email;
 
                     _emailSender.SendBookingConfirmationAsync(_appEnvironment, emailAddress, amount, currentConcert);
                     
                     TempData["result"] = "Your ticket is booked. Email confirmation is send to your email.";
+                    TempData["success"] = true;
                     return RedirectToAction("Details", new { id = id });
                 }
             }
         }
         
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? page = null)
         {
+            ViewBag.Page = page;
             if (id == null)
             {
                 return NotFound();
@@ -277,8 +298,9 @@ namespace ConcertApplication.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ConcertViewModel model)
-        {            
+        public async Task<IActionResult> Edit(int id, ConcertViewModel model, int? page = null)
+        {
+            ViewBag.Page = page;
             if (id != model.Id)
             {
                 return NotFound();
@@ -294,22 +316,19 @@ namespace ConcertApplication.Controllers
                         if (model.Type == nameof(ClassicalConcertModel))
                         {
                             ClassicalConcertModel currentClassic = await _context.ClassicalConcerts.SingleOrDefaultAsync(c => c.Id == id);
-                            currentClassic.ClassicalConcertName = model.ClassicalConcertName;
-                            currentClassic.Composer = model.Composer;
-                            currentClassic.VocalType = model.VocalType;
+                            currentClassic.Update(model);
                             _context.Update(currentClassic);
                         }
                         else if (model.Type == nameof(OpenAirModel))
                         {
                             OpenAirModel currentOpenAir = await _context.OpenAirs.SingleOrDefaultAsync(c => c.Id == id);
-                            currentOpenAir.DriveWay = model.DriveWay;
-                            currentOpenAir.Headliner = model.Headliner;
+                            currentOpenAir.Update(model);
                             _context.Update(currentOpenAir);
                         }
                         else if (model.Type == nameof(PartyModel))
                         {
                             PartyModel currentParty = await _context.Parties.SingleOrDefaultAsync(c => c.Id == id);
-                            currentParty.AgeQualification = (int)model.AgeQualification;
+                            currentParty.Update(model);
                             _context.Update(currentParty);
                         }
                     }
@@ -318,22 +337,19 @@ namespace ConcertApplication.Controllers
                         if (model.Type == nameof(ClassicalConcertModel))
                         {
                             ClassicalConcertModel newConcert = new ClassicalConcertModel(concert);
-                            newConcert.ClassicalConcertName = model.ClassicalConcertName;
-                            newConcert.Composer = model.Composer;
-                            newConcert.VocalType = model.VocalType;
+                            newConcert.Update(model);
                             _context.Concerts.Add(newConcert);
                         }
                         else if (model.Type == nameof(OpenAirModel))
                         {
                             OpenAirModel newConcert = new OpenAirModel(concert);
-                            newConcert.DriveWay = model.DriveWay;
-                            newConcert.Headliner = model.Headliner;
+                            newConcert.Update(model);
                             _context.Concerts.Add(newConcert);
                         }
                         else if (model.Type == nameof(PartyModel))
                         {
                             PartyModel newConcert = new PartyModel(concert);
-                            newConcert.AgeQualification = (int)model.AgeQualification;
+                            newConcert.Update(model);
                             _context.Concerts.Add(newConcert);
                         }
                         _context.Concerts.Remove(concert);
@@ -357,8 +373,9 @@ namespace ConcertApplication.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? page = null)
         {
+            ViewBag.Page = page;
             if (id == null)
             {
                 return NotFound();
@@ -377,8 +394,9 @@ namespace ConcertApplication.Controllers
         [HttpPost, ActionName("Delete")]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int? page = null)
         {
+            ViewBag.Page = page;
             var concert = await _context.Concerts.SingleOrDefaultAsync(m => m.Id == id);
             _context.Concerts.Remove(concert);
             await _context.SaveChangesAsync();

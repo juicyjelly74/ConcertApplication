@@ -17,5 +17,10 @@ namespace ConcertApplication.Models
         {
             Type = nameof(OpenAirModel);
         }
+        public void Update(ConcertViewModel model)
+        {
+            DriveWay = model.DriveWay;
+            Headliner = model.Headliner;
+        }
     }
 }

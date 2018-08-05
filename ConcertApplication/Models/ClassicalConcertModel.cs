@@ -18,5 +18,11 @@ namespace ConcertApplication.Models
         {
             Type = nameof(ClassicalConcertModel);
         }
+        public void Update(ConcertViewModel model)
+        {
+            VocalType = model.VocalType;
+            ClassicalConcertName = model.ClassicalConcertName;
+            Composer = model.Composer;
+        }
     }
 }

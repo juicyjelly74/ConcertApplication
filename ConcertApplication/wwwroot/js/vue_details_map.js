@@ -8,24 +8,31 @@
             }],
             map: null,
             bounds: null,
-            markers: [],
-            infos: [],
+            marker: null,
             addresses: [],
-            concerts: []
+            concert: null,
+            id: null
         }
     },
     mounted() {
-        
+        try {
+            this.id = document.getElementById('#idDiv').getAttribute('data-value');
+        } catch (ex) {
+            console.log(ex);
+        };
         var get_data_template = (response, resolve) => {
-            this.concerts = response.data;
+            this.concert = response.data;
             resolve("Success!");
         };
-        myPromise = new Promise((resolve, reject) => {
+        getDataPromise = new Promise((resolve, reject) => {
             try {
                 var error;
                 axios({
                     method: 'get',
-                    url: '/concerts/getConcerts'
+                    url: '/concerts/getConcertById',
+                    params: {
+                        id: this.id
+                    }
                 })
                     .then((data) => get_data_template(data, resolve))
                     .catch(function (error) {
@@ -35,19 +42,16 @@
                 console.log(ex);
             }
         });
-        var promises = [];
-
-        myPromise.then((successMessage) => {
-            var that = this;           
+        
+        getDataPromise.then((successMessage) => {
+            var that = this;
             var geocoder = new google.maps.Geocoder();
+            var locatePromise;
 
-            for (var i = 0; i < that.concerts.length; i++) {
-                if (!this.concerts[i]) {
-                    break;
-                }
 
-                promises.push(new Promise((resolve, reject) => {
-                    geocoder.geocode({ 'address': this.concerts[i].place }, function (results, status) {
+            if (this.concert) {
+                locatePromise = new Promise((resolve, reject) => {
+                    geocoder.geocode({ 'address': this.concert.place }, function (results, status) {
                         if (status == google.maps.GeocoderStatus.OK) {
                             let currentLocation = {
                                 latitude: results[0].geometry.location.lat(),
@@ -59,36 +63,32 @@
                             resolve(null);
                         }
                     });
-                }))
+                })
             }
 
             var that = this;
-            Promise.all(promises).then((locations) => {
-
-                for (var i = 0; i < locations.length; i++) {
-                    var coord = locations[i];
-                    if (coord != null) {
-                        var position = new google.maps.LatLng(coord.latitude, coord.longitude);
-                        var marker = new google.maps.Marker({
-                            position,
-                            map: this.map,
-                            title: this.concerts[i].place
-                        });
-                        marker.info = new google.maps.InfoWindow({
-                            content: "<h5><b>" + that.concerts[i].name + "</b></h5>" + 
-                                "<p>performer: " + that.concerts[i].performer +
-                                "</p><p>date: " + that.concerts[i].date +
-                                "</p><p>price: " + that.concerts[i].price +
-                                "</p><p>tickets left: " + that.concerts[i].ticketsLeft
-                        });
-                        that.infos.push(marker.info);
-                        google.maps.event.addListener(marker, 'click', function () {
-                            var marker_map = this.getMap();
-                            this.info.open(marker_map, this);
-                        });
-                        this.markers.push(marker);
-                        this.map.fitBounds(this.bounds.extend(position));
-                    }
+            locatePromise.then((location) => {
+                var coord = location;
+                if (coord != null) {
+                    var position = new google.maps.LatLng(coord.latitude, coord.longitude);
+                    var marker = new google.maps.Marker({
+                        position,
+                        map: this.map,
+                        title: this.concert.place
+                    });
+                    marker.info = new google.maps.InfoWindow({
+                        content: "<h5><b>" + that.concert.name + "</b></h5>" +
+                            "<p>performer: " + that.concert.performer +
+                            "</p><p>date: " + that.concert.date +
+                            "</p><p>price: " + that.concert.price +
+                            "</p><p>tickets left: " + that.concert.ticketsLeft
+                    });
+                    google.maps.event.addListener(marker, 'click', function () {
+                        var marker_map = this.getMap();
+                        this.info.open(marker_map, this);
+                    });
+                    this.marker = marker;
+                    this.map.fitBounds(this.bounds.extend(position));
                 }
             });
         });
@@ -100,6 +100,9 @@
             center: new google.maps.LatLng(mapCentre.latitude, mapCentre.longitude)
         }
         this.map = new google.maps.Map(element, options);
+        google.maps.event.addListener(this.map, "click", function (event) {
+            this.marker.info.close();
+        });
 
         if (navigator.geolocation) {
             var that = this;

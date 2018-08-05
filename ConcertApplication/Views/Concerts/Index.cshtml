@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ConcertApplication.Models.ConcertModel>
+﻿@*@model IEnumerable<ConcertApplication.Models.ConcertModel>*@
+@using ConcertApplication.Models
+@model ConcertsIndexViewModel
 @using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<ApplicationUser> SignInManager
@@ -8,51 +10,49 @@
 }
 
 <h2>All concerts</h2>
-
 <div>
-
-    <div class="table100 ver2">
+    <div class="concerts-table ver2">
         <div>
             <table class="concerts">
-                <thead class="table100-head">
+                <thead class="concerts-table-head">
                     <tr>
                         <th class="column1">
-                            @Html.DisplayNameFor(model => model.Id)
+                            @Html.DisplayNameFor(model => model.modelForHeader.Id)
                         </th>
                         <th class="column2">
-                            @Html.DisplayNameFor(model => model.Type)
+                            @Html.DisplayNameFor(model => model.modelForHeader.Type)
                         </th>
                         <th class="column3">
-                            @Html.DisplayNameFor(model => model.Name)
+                            @Html.DisplayNameFor(model => model.modelForHeader.Name)
                         </th>
                         <th class="column4">
-                            @Html.DisplayNameFor(model => model.Performer)
+                            @Html.DisplayNameFor(model => model.modelForHeader.Performer)
                         </th>
                         <th class="column5">
-                            @Html.DisplayNameFor(model => model.TicketsAmount)
+                            @Html.DisplayNameFor(model => model.modelForHeader.TicketsAmount)
                         </th>
                         <th class="column6">
-                            @Html.DisplayNameFor(model => model.TicketsLeft)
+                            @Html.DisplayNameFor(model => model.modelForHeader.TicketsLeft)
                         </th>
                         <th class="column7">
-                            @Html.DisplayNameFor(model => model.Date)
+                            @Html.DisplayNameFor(model => model.modelForHeader.Date)
                         </th>
                         <th class="column8">
-                            @Html.DisplayNameFor(model => model.Place)
+                            @Html.DisplayNameFor(model => model.modelForHeader.Place)
                         </th>
                         <th class="column9">
-                            @Html.DisplayNameFor(model => model.Price)
+                            @Html.DisplayNameFor(model => model.modelForHeader.Price)
                         </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
-                <tbody class="table100-body">
-                    @foreach (var item in Model)
+                <tbody class="concerts-table-body">
+                    @foreach (var item in Model.ConcertModels)
                     {
                         <tr>
                             <td class="column1">
-                                @Html.DisplayFor(modelItem => item.Id)
+                                @Html.DisplayFor(modelItem => item.Id).
                             </td>
                             <td class="column2">
                                 @Html.DisplayFor(modelItem => item.Type)
@@ -79,15 +79,15 @@
                                 @Html.DisplayFor(modelItem => item.Price)
                             </td>
                             <td class="column10">
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                @Html.ActionLink("Details", "Details", new { id = item.Id, page = ViewBag.Page })
                                 @if (SignInManager.IsSignedIn(User))
                                 {
                                     @if (User.IsInRole("Admin"))
                                     {
-                                        @Html.Raw("|")
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                        @Html.Raw("|")
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        @Html.Raw(" | ")
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id, page = ViewBag.Page })
+                                        @Html.Raw(" | ")
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.Id, page = ViewBag.Page })
                                     }
                                 }
                             </td>
@@ -98,18 +98,44 @@
         </div>
     </div>
 </div>
-
+<br />
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       class="button btn-default btn pull-right">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
+@for (var i = Model.PageViewModel.TotalPages; i > 0; i--)
+{
+    <a asp-action="Index"
+       asp-route-page="@i"
+       class="button btn-default btn pull-right @(Model.PageViewModel.PageNumber == i ? "disabled" : "")">
+        @i
+    </a>
+}
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       class="button btn-default btn pull-right">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+<br />
 <div id="concert_map_app">
     <concert-map></concert-map>
 </div>
 
 <template id="concert_map_template">
-    <div id="concert-map" style="width:1100px;height:500px;">
+    <div id="concert-map" style="width:1140px;height:500px;border-radius: 5px;">
     </div>
 </template>
 
 
 <script src="~/js/vue_map.js" asp-append-version="true"></script>
-
 <link rel="stylesheet" href="~/css/table_styles.css" asp-append-version="true" />
 

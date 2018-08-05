@@ -65,14 +65,14 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <div>
             <input type="submit" value="Delete" class="btn btn-default" />
         </div>
-        
+
     </form>
     <br />
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Back to List", "Index", new { page = ViewBag.Page })
 </div>
