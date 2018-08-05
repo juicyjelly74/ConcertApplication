@@ -265,15 +265,6 @@ namespace ConcertApplication.Controllers
 
             ConcertViewModel model = new ConcertViewModel(concert);
 
-            model.Types = new List<SelectListItem> {
-                    new SelectListItem {Text = "Classical concert", Value = "classical"},
-                    new SelectListItem {Text = "Open air", Value = "open_air"},
-                    new SelectListItem {Text = "Party", Value = "party"}
-                };
-            model.EditUrl = this.Url.Action("Edit", new { id = concert.Id });
-            model.DeleteUrl = this.Url.Action("Delete", new { id = concert.Id });
-            model.DetailsUrl = this.Url.Action("Details", new { id = concert.Id });
-
             if (concert.Type == nameof(ClassicalConcertModel))
             {
                 ClassicalConcertModel currentClassic = await _context.ClassicalConcerts.SingleOrDefaultAsync(c => c.Id == id);

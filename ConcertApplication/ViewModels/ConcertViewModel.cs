@@ -15,8 +15,6 @@ namespace ConcertApplication.Models
         [Required(ErrorMessage = "Select Type")]
         public string Type { get; set; }
 
-        public List<SelectListItem> Types { set; get; }
-
         [Required(ErrorMessage = "Enter Name")]
         public string Name { get; set; }
 
@@ -55,11 +53,6 @@ namespace ConcertApplication.Models
         [Required(ErrorMessage = "Enter ticket amount. It should be positive number equal or greater 1")]
         [Range(0, Int32.MaxValue)]
         public int BookingTicketAmount { get; set; }
-
-
-        public string EditUrl { get; set; }
-        public string DetailsUrl { get; set; }
-        public string DeleteUrl { get; set; }
         
         public ConcertViewModel() { }
         public ConcertViewModel(ConcertModel concert)

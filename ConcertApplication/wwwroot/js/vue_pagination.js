@@ -55,9 +55,9 @@
                             <small>TicketsLeft: {{ concert.ticketsLeft }}</small>
                         </card_body>
                         <div class="inline-div">
-                            <a class="btn form-control" v-bind:href="'Edit/'+ concert.id">Edit</a>
-                            <a class="btn form-control" v-bind:href="'Details/'+ concert.id">Details</a>
-                            <a class="btn form-control" v-bind:href="'Delete/'+ concert.id">Delete</a>
+                            <a class="btn form-control" v-bind:href="'Edit/'+ concert.id + '?page=' + (pageNumber + 1)">Edit</a>
+                            <a class="btn form-control" v-bind:href="'Details/'+ concert.id + '?page=' + (pageNumber + 1)">Details</a>
+                            <a class="btn form-control" v-bind:href="'Delete/'+ concert.id + '?page=' + (pageNumber + 1)">Delete</a>
                         </div>
                     </div>
              </div>    
