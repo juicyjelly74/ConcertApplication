@@ -20,16 +20,13 @@
         } catch (ex) {
             console.log(ex);
         };
-        for (var i = 0; i < concertList.length; i++) {
-            if (concertList[i].img == null) {
-                concertList[i].img = 'https://cdn.auth0.com/blog/aurelia-logo.png'
-            }
-        }
     },
     computed: {
         filteredList() {
             return this.concertList.filter(concert => {
-                return (concert.name.toLowerCase().includes(this.search.toLowerCase())
+                return ((concert.name.toLowerCase().includes(this.search.toLowerCase())
+                    || concert.performer.toLowerCase().includes(this.search.toLowerCase())
+                    || concert.place.toLowerCase().includes(this.search.toLowerCase()))
                     && concert.type.toLowerCase().includes(this.typeFilter.toLowerCase()))
             })
         }

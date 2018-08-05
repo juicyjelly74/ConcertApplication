@@ -41,7 +41,7 @@ namespace ConcertApplication.Models
                 await _userManager.AddToRoleAsync(user, roleNames[1]);
             }
 
-            Party party = new Party
+            PartyModel party = new PartyModel
             {
                 Name = "Mega Party",
                 Performer = "DJ BlaBla",
@@ -52,7 +52,7 @@ namespace ConcertApplication.Models
                 Price = 10
             };
 
-            Concert concert = await context.Concerts.FirstOrDefaultAsync(c => c.Name == party.Name);
+            ConcertModel concert = await context.Concerts.FirstOrDefaultAsync(c => c.Name == party.Name);
 
             if (concert == null)
             {

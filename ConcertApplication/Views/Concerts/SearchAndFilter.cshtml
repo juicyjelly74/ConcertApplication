@@ -20,7 +20,7 @@
                     <label>Filter</label>
                     <select class="form-control" type="text" v-model="typeFilter" placeholder="Filter">
                         <option value="">All</option>
-                        <option value="ClassicConcert">ClassicalConcert</option>
+                        <option value="ClassicalConcert">ClassicalConcert</option>
                         <option value="OpenAir">OpenAir</option>
                         <option value="Party">Party</option>
                     </select>
@@ -37,7 +37,6 @@
         </div>
         <div class="card" v-for="concert in filteredList">
             <card_body v-bind:href="concert.name" target="_blank">
-                <img v-bind:src="concert.img" />
                 <header>{{ concert.name }}</header>
                 <small>Performer: {{ concert.performer }}</small>
                 <small>Type: {{ concert.type }}</small>
@@ -48,9 +47,9 @@
                 <small>TicketsLeft: {{ concert.ticketsLeft }}</small>
             </card_body>
             <div class="inline-div">
-                <a class="btn form-control" v-bind:href="'Concerts/Edit/'+ concert.id">Edit</a>
-                <a class="btn form-control" v-bind:href="'Concerts/Details/'+ concert.id">Details</a>
-                <a class="btn form-control" v-bind:href="'Concerts/Delete/'+ concert.id">Delete</a>
+                <a class="btn form-control" v-bind:href="'Edit/'+ concert.id">Edit</a>
+                <a class="btn form-control" v-bind:href="'Details/'+ concert.id">Details</a>
+                <a class="btn form-control" v-bind:href="'Delete/'+ concert.id">Delete</a>
             </div>
         </div>
     </div>

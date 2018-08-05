@@ -1,8 +1,11 @@
 ﻿.carousel-caption p {
-    font-family: Pacifico;
+    font-family: Afanan;
     font-size: 50px;
     text-shadow: 3px 3px 0px black;
     font-weight: 700;
+}
+.nounderline {
+    text-decoration: none !important
 }
 
 .no-highlight input {
@@ -39,27 +42,35 @@
 }
 
 .custom_font {
-    font-family: Pacifico;
+    font-family: Afanan;
+}
+@font-face {
+    font-family: 'Afanan';
+    src: url('../fonts/afanan.ttf');
 }
 
 .card {
     box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
     min-width: 180px;
-    margin: 12px;
-    padding-bottom: 10px;
+    max-width: 210px;
+    margin: 5px;
+    padding: 5px;
     transition: .15s all ease-in-out;
     border-radius: 5px;
 }
     .card header {
         text-decoration: none;
-        padding: 10px;
+        padding: 5px;
         color: black;
         font-size: 28px;
         display: flex;
         flex-direction: column;
         align-items: center;
         font-weight: bold;
-        /*font-family: Pacifico;*/
+        font-family: Afanan;
+        white-space:pre-wrap; 
+        word-wrap:break-word;
+        min-height: 100px;
     }
 
     .card card_body {

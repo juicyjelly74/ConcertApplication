@@ -1,4 +1,7 @@
-﻿@model IEnumerable<ConcertApplication.Models.Concert>
+﻿@model IEnumerable<ConcertApplication.Models.ConcertModel>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Index";
@@ -6,82 +9,94 @@
 
 <h2>All concerts</h2>
 
+<div>
 
-<div id="concerts">
+    <div class="table100 ver2">
+        <div>
+            <table class="concerts">
+                <thead class="table100-head">
+                    <tr>
+                        <th class="column1">
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th class="column2">
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                        <th class="column3">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th class="column4">
+                            @Html.DisplayNameFor(model => model.Performer)
+                        </th>
+                        <th class="column5">
+                            @Html.DisplayNameFor(model => model.TicketsAmount)
+                        </th>
+                        <th class="column6">
+                            @Html.DisplayNameFor(model => model.TicketsLeft)
+                        </th>
+                        <th class="column7">
+                            @Html.DisplayNameFor(model => model.Date)
+                        </th>
+                        <th class="column8">
+                            @Html.DisplayNameFor(model => model.Place)
+                        </th>
+                        <th class="column9">
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Type)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Performer)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TicketsAmount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TicketsLeft)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Place)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Type)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Performer)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TicketsAmount)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TicketsLeft)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Date)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Place)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                <tbody class="table100-body">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="column1">
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td class="column2">
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td class="column3">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="column4">
+                                @Html.DisplayFor(modelItem => item.Performer)
+                            </td>
+                            <td class="column5">
+                                @Html.DisplayFor(modelItem => item.TicketsAmount)
+                            </td>
+                            <td class="column6">
+                                @Html.DisplayFor(modelItem => item.TicketsLeft)
+                            </td>
+                            <td class="column7">
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td class="column8">
+                                @Html.DisplayFor(modelItem => item.Place)
+                            </td>
+                            <td class="column9">
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td class="column10">
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        @Html.Raw("|")
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                        @Html.Raw("|")
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <div id="concert_map_app">
@@ -95,4 +110,6 @@
 
 
 <script src="~/js/vue_map.js" asp-append-version="true"></script>
+
+<link rel="stylesheet" href="~/css/table_styles.css" asp-append-version="true" />
 

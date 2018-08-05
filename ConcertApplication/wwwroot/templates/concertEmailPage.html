@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+    <div class="container body-content">
+        <h2>Dear {user}!</h2>
+
+
+        <div id="search_app">
+            <div class="row">
+                <div class="col-md-12">
+                    Your tickets booking in amount <b>{amount}</b> for the concert was succesfully completed.
+                </div>
+            </div>
+            <div style="box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;min-width: 180px;margin: 12px;padding: 5px;transition: .15s all ease-in-out;border-radius: 5px;">
+                <div style="text-decoration: none;padding: 10px;color: black;font-size: 12px;display: flex;flex-direction: column;align-items: flex-start;">
+                    <div style="text-decoration: none;padding: 10px;color: black;font-size: 28px;display: flex;flex-direction: column;align-items: center;font-weight: bold;font-family: Afanan;">
+                        {name}
+                    </div>
+                    <div style="font-size: 13px;padding: 1px;"> Performer: {performer}</div>
+                    <div style="font-size: 13px;padding: 1px;">Type: {type}</div>
+                    <div style="font-size: 13px;padding: 1px;">Date: {date}</div>
+                    <div style="font-size: 13px;padding: 1px;">Place: {place}</div>
+                    <div style="font-size: 13px;padding: 1px;">Price: {price}</div>
+                    <div style="font-size: 13px;padding: 1px;">TicketsAmount: {ticketsAmount}</div>
+                    <div style="font-size: 13px;padding: 1px;">TicketsLeft: {ticketsLeft}</div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; ConcertApplication</p>
+            <p>{now}</p>
+        </footer>
+    </div>
+</body>
+</html>

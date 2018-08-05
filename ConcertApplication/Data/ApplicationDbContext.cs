@@ -20,20 +20,20 @@ namespace ConcertApplication.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Concert>()
-            .HasDiscriminator<string>(nameof(Concert.Type))
-            .HasValue<ClassicConcert>(nameof(ClassicConcert))
-            .HasValue<OpenAir>(nameof(OpenAir))
-            .HasValue<Party>(nameof(Party));
+            builder.Entity<ConcertModel>()
+            .HasDiscriminator<string>(nameof(ConcertModel.Type))
+            .HasValue<ClassicalConcertModel>(nameof(ClassicalConcertModel))
+            .HasValue<OpenAirModel>(nameof(OpenAirModel))
+            .HasValue<PartyModel>(nameof(PartyModel));
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-        public DbSet<ConcertApplication.Models.Concert> Concerts { get; set; }
-        public DbSet<ClassicConcert> ClassicConcerts { get; set; }
-        public DbSet<Party> Parties { get; set; }
-        public DbSet<OpenAir> OpenAirs { get; set; }
-        public DbSet<TicketOrder> Tickets { get; set; }
+        public DbSet<ConcertApplication.Models.ConcertModel> Concerts { get; set; }
+        public DbSet<ClassicalConcertModel> ClassicalConcerts { get; set; }
+        public DbSet<PartyModel> Parties { get; set; }
+        public DbSet<OpenAirModel> OpenAirs { get; set; }
+        public DbSet<TicketModel> Tickets { get; set; }
     }
 }

@@ -5,11 +5,10 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    // is the current user authorized to see the next part of the page?
     @if (User.IsInRole("Admin"))
     {
-<ul class="nav navbar-nav">
-    <li><a asp-area="" asp-controller="Concerts" asp-action="Add">Add concert</a></li>
-</ul>
+        <ul class="nav navbar-nav">
+            <li><a asp-area="" asp-controller="Concerts" asp-action="Add">Add concert</a></li>
+        </ul>
     }
 }

@@ -66,19 +66,28 @@
                 }))
             }
 
+            var that = this;
             Promise.all(promises).then((locations) => {
-                locations.forEach((coord) => {
+
+                for (var i = 0; i < locations.length; i++) {
+                    var coord = locations[i];
                     if (coord != null) {
-                        const position = new google.maps.LatLng(coord.latitude, coord.longitude);
-                        const marker = new google.maps.Marker({
+                        var position = new google.maps.LatLng(coord.latitude, coord.longitude);
+                        var marker = new google.maps.Marker({
                             position,
-                            map: this.map
+                            map: this.map,
+                            title: this.addresses[i]
+                        });
+                        var infowindow = new google.maps.InfoWindow({
+                            content: that.addresses[i]
+                        });
+                        marker.addListener('click', function () {
+                            infowindow.open(this.map, marker);
                         });
                         this.markers.push(marker);
                         this.map.fitBounds(this.bounds.extend(position));
                     }
-                    console.log(locations);
-                });
+                }
             });
         });
         this.bounds = new google.maps.LatLngBounds();

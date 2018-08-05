@@ -19,7 +19,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js" asp-append-version="true"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js" asp-append-version="true"></script>
-    <script src="~/js/vue-google-maps.js"></script>
+
+    <script src="~/js/vue-google-maps.js" asp-append-version="true"></script>
+
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -41,7 +43,7 @@
                 </ul>
                 @await Html.PartialAsync("_AdminPartial")
                 @await Html.PartialAsync("_LoginPartial")
-                
+
                 <form asp-controller="Concerts" asp-action="Index" method="get">
                     <div class="col-sm-3 col-md-3 pull-right input-group no-highligh ">
                         <input type="text" class="form-control" placeholder="Search" name="SearchString" id="SearchString">
@@ -86,9 +88,8 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-
-    <link rel="stylesheet" href="~/css/custom_styles.css" />
-
+    <link rel="stylesheet" href="~/css/custom_styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/table_styles.css" asp-append-version="true" />
 
     @RenderSection("Scripts", required: false)
 </body>
