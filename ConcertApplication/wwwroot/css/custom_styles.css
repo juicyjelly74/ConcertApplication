@@ -53,7 +53,7 @@
     box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
     min-width: 180px;
     max-width: 210px;
-    margin: 5px;
+    margin: 5px 5px 13px 5px;
     padding: 5px;
     transition: .15s all ease-in-out;
     border-radius: 5px;

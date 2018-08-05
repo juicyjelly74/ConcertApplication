@@ -4,7 +4,7 @@
 <h2>Search & Filter</h2>
 
 
-<div id="search_app">
+<div id="page_app">
     <div class="row">
         <div class="col-md-4">
             <div class="search-wrapper">
@@ -29,29 +29,8 @@
         </div>
     </div>
 
-    <div class="wrapper">
-        <div v-if="filteredList.length == 0">
-            <div class="card">
-                <header>No such concerts.</header>
-            </div>
-        </div>
-        <div class="card" v-for="concert in filteredList">
-            <card_body v-bind:href="concert.name" target="_blank">
-                <header>{{ concert.name }}</header>
-                <small>Performer: {{ concert.performer }}</small>
-                <small>Type: {{ concert.type }}</small>
-                <small>Date: {{ concert.date }}</small>
-                <small>Place: {{ concert.place }}</small>
-                <small>Price: {{ concert.price }}</small>
-                <small>TicketsAmount: {{ concert.ticketsAmount }}</small>
-                <small>TicketsLeft: {{ concert.ticketsLeft }}</small>
-            </card_body>
-            <div class="inline-div">
-                <a class="btn form-control" v-bind:href="'Edit/'+ concert.id">Edit</a>
-                <a class="btn form-control" v-bind:href="'Details/'+ concert.id">Details</a>
-                <a class="btn form-control" v-bind:href="'Delete/'+ concert.id">Delete</a>
-            </div>
-        </div>
-    </div>
+    <paginated-list :list-data="filteredList" />
 </div>
+
 <script src="~/js/vue_search.js" asp-append-version="true"></script>
+<script src="~/js/vue_pagination.js" asp-append-version="true"></script>

@@ -1,10 +1,10 @@
-﻿using ConcertApplication.ViewModels.Pagination;
+﻿using ConcertApplication.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ConcertApplication.Models
+namespace ConcertApplication.ViewModels.Pagination
 {
     public class ConcertsPaginationViewModel
     {
