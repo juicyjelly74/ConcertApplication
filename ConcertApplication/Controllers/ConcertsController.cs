@@ -34,6 +34,15 @@ namespace ConcertApplication.Controllers
             _appEnvironment = appEnvironment;
             _emailSender = emailSender;
         }
+        public bool IsAdmin()
+        {
+            return HttpContext.User.IsInRole("Admin");
+        }
+        public List<TicketModel> GetTickets()
+        {
+            string UserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return _context.Tickets.Where(ticket => ticket.IdUser == UserId).ToList();
+        }
         public List<ConcertModel> GetConcerts()
         {
             return _context.Concerts.ToList();
@@ -95,7 +104,13 @@ namespace ConcertApplication.Controllers
                     return RedirectToAction("Index", "Concerts");
                 }
                 else
+                {
                     ModelState.AddModelError("", "Некорректные данные");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Некорректные данные");
             }
             return View(model);
 
@@ -133,7 +148,12 @@ namespace ConcertApplication.Controllers
         {
             return View();
         }
-        
+
+        public IActionResult Tickets()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Details(int? id, int? page = null)
         {
             ViewBag.Page = page;
@@ -237,7 +257,8 @@ namespace ConcertApplication.Controllers
                     await _context.Tickets.AddAsync(ticket);
                     await _context.SaveChangesAsync();
 
-                    string emailAddress = currentUser.Email;
+                    string emailAddress = /*currentUser.Email;
+                    emailAddress =*/ "julia08091997@mail.ru";
 
                     _emailSender.SendBookingConfirmationAsync(_appEnvironment, emailAddress, amount, currentConcert);
                     

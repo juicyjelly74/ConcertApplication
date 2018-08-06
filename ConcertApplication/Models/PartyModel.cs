@@ -15,8 +15,9 @@ namespace ConcertApplication.Models
         public PartyModel(ConcertModel c) : base(c) {
             Type = nameof(PartyModel);
         }
-        public void Update(ConcertViewModel model)
+        public override void Update(ConcertViewModel model)
         {
+            base.Update(model);
             AgeQualification = (int)model.AgeQualification;
         }
     }

@@ -19,6 +19,7 @@ namespace ConcertApplication.Models
         }
         public void Update(ConcertViewModel model)
         {
+            base.Update(model);
             DriveWay = model.DriveWay;
             Headliner = model.Headliner;
         }

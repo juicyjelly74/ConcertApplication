@@ -42,6 +42,16 @@ namespace ConcertApplication.Models
             Price = model.Price;
             Type = model.Type;
         }
+        public virtual void Update(ConcertViewModel model)
+        {
+            Name = model.Name;
+            Performer = model.Performer;
+            TicketsAmount = model.TicketsAmount;
+            TicketsLeft = model.TicketsLeft;
+            Date = model.ConcertDate;
+            Place = model.Place;
+            Price = model.Price;
+        }
         public override string ToString()
         {
             string result = "\nConcert " + this.Name + " with info:\n";

@@ -15,7 +15,7 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLj3fIg-xtc4__8yzjyv_1VZOHefPvqe0"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAk3dht1rDOaRfmW7mvW9IBFZtogcrSD90"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js" asp-append-version="true"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js" asp-append-version="true"></script>
@@ -39,12 +39,13 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Concerts" asp-action="Index">Concerts</a></li>
                     <li><a asp-area="" asp-controller="Concerts" asp-action="SearchAndFilter">Search & Filter</a></li>
+                    <li><a asp-area="" asp-controller="Concerts" asp-action="Tickets">Tickets</a></li>
                 </ul>
                 @await Html.PartialAsync("_AdminPartial")
                 @await Html.PartialAsync("_LoginPartial")
 
                 <form asp-controller="Concerts" asp-action="Index" method="get">
-                    <div class="col-sm-3 col-md-3 pull-right input-group no-highligh ">
+                    <div class="col-sm-2 col-md-2 pull-right input-group no-highligh ">
                         <input type="text" class="form-control" placeholder="Search" name="SearchString" id="SearchString">
                         <div class="input-group-btn no-highlight-btn">
                             <button class="btn btn-default" type="submit">
@@ -89,6 +90,7 @@
 
     <link rel="stylesheet" href="~/css/custom_styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/table_styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     @RenderSection("Scripts", required: false)
 </body>

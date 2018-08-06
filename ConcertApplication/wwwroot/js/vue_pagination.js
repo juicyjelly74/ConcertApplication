@@ -1,7 +1,8 @@
 ﻿Vue.component('paginated-list', {
     data: function () {
         return {
-            pageNumber: 0
+            pageNumber: 0,
+            role: false
         }
     },
     props: {
@@ -15,6 +16,21 @@
             default: 5
         }
     },
+    mounted() {
+        try {
+            var error;
+            axios({
+                method: 'get',
+                url: '/concerts/isAdmin'
+            })
+                .then((response) => this.role = response.data)
+                .catch(function (error) {
+                    console.log(error);
+                });
+        } catch (ex) {
+            console.log(ex);
+        };
+    }, 
     methods: {
         nextPage() {
             this.pageNumber++;
@@ -47,17 +63,17 @@
                         <card_body>
                             <header>{{ concert.name }}</header>
                             <small>Performer: {{ concert.performer }}</small>
-                            <small>Type: {{ concert.type }}</small>
+                            <small>Type: {{ concert.type.substring(0, concert.type.length - 5) }}</small>
                             <small>Date: {{ concert.date }}</small>
                             <small>Place: {{ concert.place }}</small>
                             <small>Price: {{ concert.price }}</small>
-                            <small>TicketsAmount: {{ concert.ticketsAmount }}</small>
-                            <small>TicketsLeft: {{ concert.ticketsLeft }}</small>
+                            <small>Tickets amount: {{ concert.ticketsAmount }}</small>
+                            <small>Tickets left: {{ concert.ticketsLeft }}</small>
                         </card_body>
                         <div class="inline-div">
-                            <a class="btn form-control" v-bind:href="'Edit/'+ concert.id + '?page=' + (pageNumber + 1)">Edit</a>
+                            <a v-if="role" class="btn form-control" v-bind:href="'Edit/'+ concert.id + '?page=' + (pageNumber + 1)">Edit</a>
                             <a class="btn form-control" v-bind:href="'Details/'+ concert.id + '?page=' + (pageNumber + 1)">Details</a>
-                            <a class="btn form-control" v-bind:href="'Delete/'+ concert.id + '?page=' + (pageNumber + 1)">Delete</a>
+                            <a v-if="role" class="btn form-control" v-bind:href="'Delete/'+ concert.id + '?page=' + (pageNumber + 1)">Delete</a>
                         </div>
                     </div>
              </div>    

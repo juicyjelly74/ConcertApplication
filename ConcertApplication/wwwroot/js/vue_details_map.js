@@ -96,19 +96,20 @@
         const element = document.getElementById('concert-map')
         const mapCentre = this.markerCoordinates[0]
         const options = {
-            zoom: 4,
+            zoom: 5,
             center: new google.maps.LatLng(mapCentre.latitude, mapCentre.longitude)
         }
         this.map = new google.maps.Map(element, options);
         google.maps.event.addListener(this.map, "click", function (event) {
             this.marker.info.close();
         });
-
+        
         if (navigator.geolocation) {
             var that = this;
             navigator.geolocation.getCurrentPosition(function (position) {
                 initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 that.map.setCenter(initialLocation);
+                setTimeout(() => { that.map.setZoom(13) }, 1000);
             });
         }
 
