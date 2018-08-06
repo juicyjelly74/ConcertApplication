@@ -41,20 +41,20 @@
                     <label asp-for="Type" class="control-label"></label>
                     <select id="select_type" asp-for="Type" class="form-control" v-model="selected">
                         <option disabled>Select type</option>
-                        <option value="classical">Classical Concert</option>
-                        <option value="open_air">Open Air</option>
-                        <option value="party">Party</option>
+                        <option value="ClassicalConcert">Classical Concert</option>
+                        <option value="OpenAir">Open Air</option>
+                        <option value="Party">Party</option>
                     </select>
                     <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
                 <div>
-                    <div id="classical_part" v-show="selected == 'classical'" class="form-group">
+                    <div id="classical_part" v-show="selected == 'ClassicalConcert'" class="form-group">
                         @Html.Partial("AddPartials/_ClassicalPartial")
                     </div>
-                    <div id="open_air_part" v-show="selected == 'open_air'" class="form-group">
+                    <div id="open_air_part" v-show="selected == 'OpenAir'" class="form-group">
                         @Html.Partial("AddPartials/_OpenAirPartial")
                     </div>
-                    <div id="party_part" v-show="selected == 'party'" class="form-group">
+                    <div id="party_part" v-show="selected == 'Party'" class="form-group">
                         @Html.Partial("AddPartials/_PartyPartial")
                     </div>
                     <div class="form-group">

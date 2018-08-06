@@ -16,7 +16,7 @@ using ConcertApplication.ViewModels.Pagination;
 
 namespace ConcertApplication.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ConcertsController : Controller
     {
         public const int pageSize = 5;
@@ -56,13 +56,13 @@ namespace ConcertApplication.Controllers
            return  _context.Concerts.Select(c => c.Place).ToList();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(ConcertViewModel model)
         {
@@ -97,6 +97,10 @@ namespace ConcertApplication.Controllers
                         PartyModel party = new PartyModel(c);
                         party.AgeQualification = model.AgeQualification.Value;
                         _context.Parties.Add(party);
+                    }
+                    else
+                    { 
+                        ModelState.AddModelError("", "Некорректные данные");
                     }
 
                     await _context.SaveChangesAsync();
