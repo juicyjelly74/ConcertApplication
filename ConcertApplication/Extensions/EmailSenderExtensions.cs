@@ -29,8 +29,8 @@ namespace ConcertApplication.Services
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.Credentials = new System.Net.NetworkCredential()
             {
-                UserName = "juicy.jelly74@gmail.com",
-                Password = "45gfgfvfvf"
+                UserName = "username",
+                Password = "password"
             };
 
             mail.IsBodyHtml = true;
